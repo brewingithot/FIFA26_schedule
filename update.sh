@@ -1,8 +1,25 @@
 #!/usr/bin/env bash
-# One-command refresh: regenerate the .ics, then (if a remote is configured)
-# push it to your hosting. Edit the PUSH_CMD line below to match your setup.
+# One-command refresh: scrub xlsx metadata, regenerate the .ics, then (if a
+# remote is configured) push it to your hosting. Edit the PUSH_CMD line below
+# to match your setup.
 set -euo pipefail
 cd "$(dirname "$0")"
+
+# Scrub xlsx metadata before regenerating. Excel/Numbers writes the OS user's
+# full name into core.xml on save (creator, lastModifiedBy) and the org name
+# into app.xml (company). Wipe all of it so the committed xlsx contains no
+# identifying metadata. Idempotent — safe to run when nothing changed.
+python3 - <<'PY'
+import openpyxl
+src = "2026_FIFA_World_Cup_Schedule.xlsx"
+wb = openpyxl.load_workbook(src)
+p = wb.properties
+for field in ("creator", "lastModifiedBy", "title", "subject",
+              "description", "keywords", "category", "contentStatus"):
+    setattr(p, field, "")
+wb.save(src)
+print(f"Scrubbed metadata in {src}")
+PY
 
 python3 generate_ics.py
 
