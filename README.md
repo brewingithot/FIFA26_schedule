@@ -12,6 +12,8 @@ Times are in `America/Los_Angeles` and your calendar app will auto-convert to yo
 
 As bracket TBDs are resolved during the tournament (e.g., `TBD vs TBD` → `USA vs Brazil`), the existing event's title updates in place. You don't need to re-subscribe — your calendar app pulls the latest version on its own schedule.
 
+<img width="3016" height="1740" alt="image" src="https://github.com/user-attachments/assets/25c25aca-5fd0-4dbb-96f8-3c9cc5f10dfb" />
+
 ---
 
 ## For subscribers — how to add this to your calendar
