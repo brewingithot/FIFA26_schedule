@@ -1,8 +1,8 @@
 name: Live Score Updater
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'   # every 5 minutes
+  # schedule:
+  #   - cron: '*/5 * * * *'   # every 5 minutes — disabled, trigger manually
   workflow_dispatch:          # allow manual trigger for testing
 
 # Prevent two runs overlapping and conflicting on git push.
