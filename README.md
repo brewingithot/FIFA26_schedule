@@ -2,6 +2,17 @@
 
 A subscribable iCalendar (`.ics`) feed for all 76 matches of the 2026 FIFA World Cup, hosted as a static file on GitHub Pages. Each match is a 15-minute event at kickoff with an alert that fires at the start of the match.
 
+**Live scores:** During each match, the event title updates automatically with the live score and match minute — no action needed from subscribers. If your calendar app is set to refresh every 15 minutes, you'll see the score update within 15 minutes of it changing.
+
+Example title progression during a match:
+```
+Argentina vs France (Quarter-final)          ← before kickoff
+Argentina vs France 23' (1:0) (Quarter-final) ← in progress
+Argentina vs France HT (1:0) (Quarter-final)  ← half time
+Argentina vs France 67' (1:2) (Quarter-final) ← second half
+Argentina vs France FT (3:3) (Quarter-final)  ← full time
+```
+
 **Subscribe URL:**
 
 ```
@@ -30,7 +41,7 @@ Click this link from any browser, Mail, or Messages:
 webcal://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics
 ```
 
-…or in Calendar.app: **File → New Calendar Subscription…** and paste the HTTPS URL above. Set **Auto-refresh** to "Every hour" for the fastest updates.
+…or in Calendar.app: **File → New Calendar Subscription…** and paste the HTTPS URL above. Set **Auto-refresh** to "Every 15 minutes" to get live score updates during matches.
 
 ### iPhone / iPad
 
@@ -110,3 +121,29 @@ Wrote 76 events to 2026_FIFA_World_Cup.ics (+0 added, 1 changed, 75 unchanged, 0
 | `update.sh` | Wrapper that runs the generator |
 | `2026_FIFA_World_Cup.ics` | The artifact subscribers pull |
 | `state.json` | Per-event hash + SEQUENCE tracking |
+| `live_score_updater.py` | Patches the .ics with live scores during matches |
+| `.github/workflows/live_scores.yml` | Runs the updater every 5 minutes via GitHub Actions |
+
+---
+
+## Live score updates — how it works
+
+A GitHub Actions workflow runs `live_score_updater.py` every 5 minutes automatically. No server or manual intervention is needed.
+
+**What it does:**
+1. Checks if any match is currently in progress (`kickoff ≤ now ≤ kickoff + 100 min`)
+2. If yes, fetches the live score from ESPN's scoreboard API
+3. Patches the event's SUMMARY in the `.ics` with the current score and match minute
+4. Commits and pushes — subscribers' calendar apps pick up the update on their next poll
+
+**Subscribers don't need to do anything.** The `.ics` URL stays the same. As long as Auto-refresh is enabled in their calendar app, updates arrive automatically:
+
+| App | Refresh frequency |
+|---|---|
+| Apple Calendar | Every 15 minutes (set in subscription settings) |
+| iPhone / iPad | Every 15 minutes (same setting synced via iCloud) |
+| Google Calendar | Every 12–24 hours (Google's fixed polling interval) |
+| Outlook | Every few hours (varies by client) |
+
+**Score format:** `Argentina vs France 67' (1:2) (Quarter-final)`
+Halftime shows `HT`, full time shows `FT`. After 100 minutes from kickoff, the workflow stops polling for that match.
