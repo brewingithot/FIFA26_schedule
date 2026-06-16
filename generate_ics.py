@@ -27,6 +27,7 @@ HERE = Path(__file__).resolve().parent
 SOURCE_XLSX = HERE / "2026_FIFA_World_Cup_Schedule.xlsx"
 OUTPUT_ICS = HERE / "2026_FIFA_World_Cup.ics"
 STATE_FILE = HERE / "state.json"
+SCORES_FILE = HERE / "scores.json"
 
 YEAR = 2026
 TZID = "America/Los_Angeles"
@@ -108,8 +109,14 @@ def fmt_local(dt: datetime) -> str:
     return dt.strftime("%Y%m%dT%H%M%S")
 
 
-def build_event_payload(event: dict) -> dict:
-    summary = f"{event['match']} ({event['stage']})"
+def build_event_payload(event: dict, final_scores: dict | None = None) -> dict:
+    uid = make_uid(event)
+    score = (final_scores or {}).get(uid)
+    summary = (
+        f"{event['match']} FT ({score}) ({event['stage']})"
+        if score else
+        f"{event['match']} ({event['stage']})"
+    )
     location = ", ".join(p for p in (event["stadium"], event["country"]) if p)
     description = (
         f"Stage: {event['stage']}\n"
@@ -118,7 +125,7 @@ def build_event_payload(event: dict) -> dict:
         f"Kickoff: {event['start'].strftime('%a %b %d, %Y at %H:%M')} {TZID}"
     )
     return {
-        "uid": make_uid(event),
+        "uid": uid,
         "summary": summary,
         "location": location,
         "description": description,
@@ -187,6 +194,7 @@ def main() -> None:
     events.sort(key=lambda e: e["start"])
 
     state = load_state()
+    final_scores = json.loads(SCORES_FILE.read_text()) if SCORES_FILE.exists() else {}
     new_state: dict = {}
     now_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
@@ -206,7 +214,7 @@ def main() -> None:
 
     changed = added = unchanged = 0
     for event in events:
-        payload = build_event_payload(event)
+        payload = build_event_payload(event, final_scores)
         h = content_hash(payload)
         prev = state.get(payload["uid"])
         if prev is None:

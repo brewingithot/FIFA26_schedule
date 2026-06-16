@@ -35,8 +35,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet -- 2026_FIFA_World_Cup.ics state.json; then
-            git add 2026_FIFA_World_Cup.ics state.json
+          git add 2026_FIFA_World_Cup.ics state.json
+          [ -f scores.json ] && git add scores.json || true
+          if ! git diff --cached --quiet; then
             git commit -m "live: score update"
             git push
           fi

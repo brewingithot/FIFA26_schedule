@@ -123,6 +123,7 @@ Wrote 76 events to 2026_FIFA_World_Cup.ics (+0 added, 1 changed, 75 unchanged, 0
 | `state.json` | Per-event hash + SEQUENCE tracking |
 | `live_score_updater.py` | Patches the .ics with live scores during matches |
 | `.github/workflows/live_scores.yml` | Runs the updater every 5 minutes via GitHub Actions |
+| `scores.json` | Permanent record of final scores; used by generate_ics.py to keep FT scores in titles |
 
 ---
 

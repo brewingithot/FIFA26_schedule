@@ -25,6 +25,7 @@ HERE = Path(__file__).resolve().parent
 SOURCE_XLSX = HERE / "2026_FIFA_World_Cup_Schedule.xlsx"
 OUTPUT_ICS = HERE / "2026_FIFA_World_Cup.ics"
 STATE_FILE = HERE / "state.json"
+SCORES_FILE = HERE / "scores.json"
 
 YEAR = 2026
 TZ = ZoneInfo("America/Los_Angeles")
@@ -168,6 +169,17 @@ def extract_score(ev: dict, match_str: str) -> dict | None:
     return {"score": score, "minute": minute}
 
 
+# ── Final score persistence ───────────────────────────────────────────────────
+
+def save_final_score(uid: str, score: str) -> None:
+    """Write FT score to scores.json so generate_ics.py can include it permanently."""
+    scores = json.loads(SCORES_FILE.read_text()) if SCORES_FILE.exists() else {}
+    if scores.get(uid) == score:
+        return
+    scores[uid] = score
+    SCORES_FILE.write_text(json.dumps(scores, indent=2, sort_keys=True))
+
+
 # ── .ics patching ─────────────────────────────────────────────────────────────
 
 def patch_ics(uid: str, new_summary: str, state: dict) -> bool:
@@ -250,6 +262,9 @@ def main() -> None:
         if not score_info:
             print(f"  Not started yet on ESPN: {m['match']}")
             continue
+
+        if score_info["minute"] == "FT":
+            save_final_score(m["uid"], score_info["score"])
 
         summary = (
             f"{m['match']} {score_info['minute']} "
