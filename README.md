@@ -1,5 +1,7 @@
 # 2026 FIFA World Cup — Calendar Feed
 
+**Live updates on your calendar event so you don't miss a thing!**
+
 A subscribable iCalendar (`.ics`) feed for all 76 matches of the 2026 FIFA World Cup, hosted as a static file on GitHub Pages. Each match is a 15-minute event at kickoff with an alert that fires at the start of the match.
 
 **Live scores:** During each match, the event title updates automatically with the live score and match minute — no action needed from subscribers. If your calendar app is set to refresh every 15 minutes, you'll see the score update within 15 minutes of it changing.
