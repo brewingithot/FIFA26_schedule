@@ -471,12 +471,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:c947cb4c205ae7f6@fifa-world-cup-2026
-DTSTAMP:20260617T233341Z
-LAST-MODIFIED:20260617T233341Z
-SEQUENCE:16
+DTSTAMP:20260617T233542Z
+LAST-MODIFIED:20260617T233542Z
+SEQUENCE:17
 DTSTART;TZID=America/Los_Angeles:20260617T160000
 DTEND;TZID=America/Los_Angeles:20260617T161500
-SUMMARY:Ghana vs Panama 33' (0:0) (Group Stage)
+SUMMARY:Ghana vs Panama 35' (0:0) (Group Stage)
 LOCATION:Toronto Stadium\, Canada
 DESCRIPTION:Stage: Group Stage\nMatch: Ghana vs Panama\nVenue: Toronto Stad
  ium\, Canada\nKickoff: Wed Jun 17\, 2026 at 16:00 America/Los_Angeles
