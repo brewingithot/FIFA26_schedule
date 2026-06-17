@@ -19,13 +19,16 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 from live_score_updater import (
-    extract_score,
-    fetch_live,
-    find_fd_match,
     find_live,
     patch_ics,
     read_schedule,
     save_final_score,
+    fetch_espn,
+    fetch_live,
+    find_espn_event,
+    find_fd_match,
+    extract_score_espn,
+    extract_score_fd,
 )
 
 HERE = Path(__file__).resolve().parent
@@ -96,24 +99,42 @@ def poll() -> bool:
 
     log(f"Live: {[m['match'] for m in live]}")
 
+    # Fetch ESPN first — covers featured matches with live minute data
     try:
-        fd_matches = fetch_live()
+        espn_events = fetch_espn()
     except Exception as e:
-        log(f"football-data.org fetch failed: {e}")
-        return False
+        log(f"ESPN fetch failed: {e}")
+        espn_events = []
+
+    # football-data.org fetched lazily as fallback
+    fd_matches: list | None = None
 
     state = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
     any_updated = False
 
     for m in live:
-        fd = find_fd_match(m["match"], fd_matches)
-        if not fd:
-            log(f"  not found: {m['match']}")
-            continue
+        score_info = None
+        source = None
 
-        score_info = extract_score(fd, m["match"], m["kickoff"])
+        ev = find_espn_event(m["match"], espn_events)
+        if ev:
+            score_info = extract_score_espn(ev, m["match"])
+            source = "ESPN"
+
         if not score_info:
-            log(f"  not started yet: {m['match']}")
+            if fd_matches is None:
+                try:
+                    fd_matches = fetch_live()
+                except Exception as e:
+                    log(f"  football-data.org fetch failed: {e}")
+                    fd_matches = []
+            fd = find_fd_match(m["match"], fd_matches)
+            if fd:
+                score_info = extract_score_fd(fd, m["match"], m["kickoff"])
+                source = "football-data.org"
+
+        if not score_info:
+            log(f"  not found on any source: {m['match']}")
             continue
 
         if score_info["minute"] == "FT":
@@ -125,10 +146,10 @@ def poll() -> bool:
             f"({score_info['score']}) ({m['stage']})"
         )
         if patch_ics(m["uid"], summary, state):
-            log(f"  updated: {summary}")
+            log(f"  [{source}] updated: {summary}")
             any_updated = True
         else:
-            log(f"  unchanged: {summary}")
+            log(f"  [{source}] unchanged: {summary}")
 
     return any_updated
 
