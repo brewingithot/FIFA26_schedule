@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, time, timedelta, timezone
 from pathlib import Path
 
 import openpyxl
@@ -85,6 +85,7 @@ def fold_line(line: str) -> str:
 
 def parse_row(row: tuple) -> dict | None:
     stage, date_str, time_str, match, stadium, country = row[:6]
+    force_score = row[6] if len(row) > 6 else None
     if not date_str or not time_str or not match:
         return None
     dt = datetime.strptime(f"{date_str} {YEAR} {time_str}", "%B %d %Y %H:%M")
@@ -95,6 +96,7 @@ def parse_row(row: tuple) -> dict | None:
         "country": (country or "").strip(),
         "start": dt,
         "end": dt + EVENT_DURATION,
+        "force_score": f"{force_score.hour}:{force_score.minute}" if isinstance(force_score, time) else (str(force_score).strip() if force_score else None),
     }
 
 
@@ -195,6 +197,19 @@ def main() -> None:
 
     state = load_state()
     final_scores = json.loads(SCORES_FILE.read_text()) if SCORES_FILE.exists() else {}
+
+    # Write force scores through to scores.json so all consumers see them
+    force_applied = 0
+    for event in events:
+        if event.get("force_score"):
+            uid = make_uid(event)
+            if final_scores.get(uid) != event["force_score"]:
+                final_scores[uid] = event["force_score"]
+                force_applied += 1
+    if force_applied:
+        SCORES_FILE.write_text(json.dumps(final_scores, indent=2, sort_keys=True))
+        print(f"Applied {force_applied} force score(s) to {SCORES_FILE.name}")
+
     new_state: dict = {}
     now_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 

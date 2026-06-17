@@ -91,14 +91,8 @@ open 2026_FIFA_World_Cup_Schedule.xlsx
 git diff 2026_FIFA_World_Cup.ics
 
 # 4. Commit and push — subscribers' calendars pull on their next refresh
-git add 2026_FIFA_World_Cup.ics state.json 2026_FIFA_World_Cup_Schedule.xlsx
+git add 2026_FIFA_World_Cup.ics state.json scores.json 2026_FIFA_World_Cup_Schedule.xlsx
 git commit -m "Describe what changed"
-git push
-
-# 5. (Optional) After matches finish, sync final scores into the xlsx
-python3 sync_scores_to_xlsx.py
-git add 2026_FIFA_World_Cup_Schedule.xlsx scores.json
-git commit -m "sync final scores to xlsx"
 git push
 ```
 
@@ -122,15 +116,14 @@ Wrote 76 events to 2026_FIFA_World_Cup.ics (+0 added, 1 changed, 75 unchanged, 0
 
 | File | Purpose |
 |---|---|
-| `2026_FIFA_World_Cup_Schedule.xlsx` | Source data — the only file you edit |
+| `2026_FIFA_World_Cup_Schedule.xlsx` | Source data — the only file you edit. Fill column G ("Score") with the final score (e.g. `2:1`) to bake it into the calendar |
 | `generate_ics.py` | Reads the xlsx, writes the .ics, updates state.json |
 | `update.sh` | Wrapper that runs the generator |
 | `2026_FIFA_World_Cup.ics` | The artifact subscribers pull |
 | `state.json` | Per-event hash + SEQUENCE tracking |
 | `live_score_updater.py` | Patches the .ics with live scores during matches |
 | `.github/workflows/live_scores.yml` | Runs the updater every 5 minutes via GitHub Actions |
-| `scores.json` | Permanent record of final scores; used by generate_ics.py to keep FT scores in titles |
-| `sync_scores_to_xlsx.py` | Copies final scores from scores.json into the xlsx Score column — run manually |
+| `scores.json` | Permanent record of final scores; populated from xlsx col G by generate_ics.py |
 
 ---
 
