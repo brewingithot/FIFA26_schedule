@@ -31,6 +31,8 @@ jobs:
         run: pip install openpyxl requests
 
       - name: Fetch live scores and patch .ics
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: python live_score_updater.py
 
       - name: Commit and push if .ics changed

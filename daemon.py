@@ -20,8 +20,8 @@ from pathlib import Path
 
 from live_score_updater import (
     extract_score,
-    fetch_espn,
-    find_espn_event,
+    fetch_live,
+    find_fd_match,
     find_live,
     patch_ics,
     read_schedule,
@@ -97,21 +97,21 @@ def poll() -> bool:
     log(f"Live: {[m['match'] for m in live]}")
 
     try:
-        espn_events = fetch_espn()
+        fd_matches = fetch_live()
     except Exception as e:
-        log(f"ESPN fetch failed: {e}")
+        log(f"football-data.org fetch failed: {e}")
         return False
 
     state = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
     any_updated = False
 
     for m in live:
-        ev = find_espn_event(m["match"], espn_events)
-        if not ev:
-            log(f"  not on ESPN: {m['match']}")
+        fd = find_fd_match(m["match"], fd_matches)
+        if not fd:
+            log(f"  not found: {m['match']}")
             continue
 
-        score_info = extract_score(ev, m["match"])
+        score_info = extract_score(fd, m["match"], m["kickoff"])
         if not score_info:
             log(f"  not started yet: {m['match']}")
             continue

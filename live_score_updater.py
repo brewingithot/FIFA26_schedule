@@ -1,18 +1,16 @@
 """Live score updater for 2026 FIFA World Cup calendar feed.
 
-Finds any match currently in progress (kickoff <= now <= kickoff + 100 min),
-fetches the live score from ESPN's scoreboard API, and patches the .ics
-SUMMARY to: "ABC vs DEF 45' (1:2) (Group Stage)"
-
-Designed to run every 5 minutes via GitHub Actions. Exits silently when no
-match is live so non-match days cost nothing.
+Uses football-data.org API v4 to fetch live scores for ALL matches.
+Token resolution: FOOTBALL_DATA_TOKEN env var (GitHub Actions) or macOS Keychain (local/daemon).
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
+import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -31,7 +29,20 @@ YEAR = 2026
 TZ = ZoneInfo("America/Los_Angeles")
 LIVE_WINDOW = timedelta(minutes=130)
 
-ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard"
+FOOTBALL_DATA_URL = "https://api.football-data.org/v4/competitions/WC/matches"
+
+
+# ── Token ─────────────────────────────────────────────────────────────────────
+
+def get_token() -> str:
+    token = os.environ.get("FOOTBALL_DATA_TOKEN", "")
+    if token:
+        return token
+    r = subprocess.run(
+        ["security", "find-generic-password", "-a", "fifa2026", "-s", "football-data-api", "-w"],
+        capture_output=True, text=True,
+    )
+    return r.stdout.strip() if r.returncode == 0 else ""
 
 
 # ── iCal helpers ──────────────────────────────────────────────────────────────
@@ -76,7 +87,6 @@ def read_schedule() -> list[dict]:
         if not date_str or not time_str or not match:
             continue
         dt_naive = datetime.strptime(f"{date_str} {YEAR} {time_str}", "%B %d %Y %H:%M")
-        # UID must be computed from naive datetime to match generate_ics.py
         uid_key = f"{(stage or '').strip()}|{dt_naive.isoformat()}|{(stadium or '').strip()}"
         uid = hashlib.sha1(uid_key.encode()).hexdigest()[:16] + "@fifa-world-cup-2026"
         rows.append({
@@ -98,81 +108,81 @@ def find_live(matches: list[dict]) -> list[dict]:
     ]
 
 
-# ── ESPN API ──────────────────────────────────────────────────────────────────
+# ── football-data.org API ─────────────────────────────────────────────────────
 
-def fetch_espn() -> list[dict]:
-    r = requests.get(ESPN_URL, timeout=10, headers={"User-Agent": "Mozilla/5.0"})
+def fetch_live() -> list[dict]:
+    token = get_token()
+    if not token:
+        raise ValueError("No football-data.org token found. Set FOOTBALL_DATA_TOKEN env var or store in Keychain.")
+    r = requests.get(
+        FOOTBALL_DATA_URL,
+        params={"status": "LIVE"},
+        headers={"X-Auth-Token": token},
+        timeout=10,
+    )
     r.raise_for_status()
-    return r.json().get("events", [])
+    return r.json().get("matches", [])
 
 
 def _norm(s: str) -> str:
     return s.lower().strip()
 
 
-def _team_match(our: str, espn_team: dict) -> bool:
+def _team_match(our: str, fd_team: dict) -> bool:
     our_n = _norm(our)
-    for key in ("displayName", "name", "shortDisplayName", "abbreviation"):
-        if _norm(espn_team.get(key, "")) == our_n:
+    for key in ("name", "shortName", "tla"):
+        if _norm(fd_team.get(key, "")) == our_n:
             return True
     return False
 
 
-def find_espn_event(match_str: str, espn_events: list) -> dict | None:
+def find_fd_match(match_str: str, fd_matches: list) -> dict | None:
     if "TBD" in match_str:
         return None
     parts = match_str.split(" vs ", 1)
     if len(parts) != 2:
         return None
     t1, t2 = parts[0].strip(), parts[1].strip()
-    for ev in espn_events:
-        comps = ev.get("competitions", [{}])[0].get("competitors", [])
-        if len(comps) < 2:
-            continue
-        by_side = {c["homeAway"]: c["team"] for c in comps}
-        home, away = by_side.get("home", {}), by_side.get("away", {})
+    for m in fd_matches:
+        home = m.get("homeTeam", {})
+        away = m.get("awayTeam", {})
         if (_team_match(t1, home) and _team_match(t2, away)) or \
            (_team_match(t1, away) and _team_match(t2, home)):
-            return ev
+            return m
     return None
 
 
-def extract_score(ev: dict, match_str: str) -> dict | None:
-    comp = ev["competitions"][0]
-    status = comp["status"]
-    stype = status["type"]
-    state = stype.get("state", "")
-
-    if state not in ("in", "post"):
+def extract_score(fd_match: dict, match_str: str, kickoff: datetime) -> dict | None:
+    status = fd_match.get("status", "")
+    if status not in ("IN_PLAY", "PAUSED", "FINISHED"):
         return None
 
-    comps = comp["competitors"]
-    by_side = {c["homeAway"]: c for c in comps}
-    home_c = by_side.get("home", {})
-    away_c = by_side.get("away", {})
+    ft = (fd_match.get("score") or {}).get("fullTime") or {}
+    h = ft.get("home") or 0
+    a = ft.get("away") or 0
 
-    # Preserve team order from our match string
     t1 = match_str.split(" vs ", 1)[0].strip()
-    if _team_match(t1, home_c.get("team", {})):
-        score = f"{home_c.get('score', 0)}:{away_c.get('score', 0)}"
+    if _team_match(t1, fd_match.get("homeTeam", {})):
+        score_str = f"{h}:{a}"
     else:
-        score = f"{away_c.get('score', 0)}:{home_c.get('score', 0)}"
+        score_str = f"{a}:{h}"
 
-    if state == "post":
+    if status == "FINISHED":
         minute = "FT"
-    elif stype.get("name") == "STATUS_HALFTIME":
+    elif status == "PAUSED":
         minute = "HT"
     else:
-        detail = stype.get("detail", "")
-        minute = detail if detail else f"{int(status.get('clock', 0) // 60)}'"
+        elapsed = int((datetime.now(timezone.utc) - kickoff.astimezone(timezone.utc)).total_seconds() / 60)
+        if elapsed > 60:
+            elapsed = max(elapsed - 15, 46)
+        minute = f"{min(elapsed, 90)}'"
 
-    return {"score": score, "minute": minute}
+    return {"score": score_str, "minute": minute}
 
 
 # ── Final score persistence ───────────────────────────────────────────────────
 
 def save_final_score(uid: str, score: str) -> None:
-    """Write FT score to scores.json so generate_ics.py can include it permanently."""
     scores = json.loads(SCORES_FILE.read_text()) if SCORES_FILE.exists() else {}
     if scores.get(uid) == score:
         return
@@ -183,12 +193,6 @@ def save_final_score(uid: str, score: str) -> None:
 # ── .ics patching ─────────────────────────────────────────────────────────────
 
 def patch_ics(uid: str, new_summary: str, state: dict) -> bool:
-    """Find the VEVENT with matching UID and update its SUMMARY in place.
-
-    Uses regex on raw .ics bytes so folded multi-line property values are
-    handled correctly without a full parse/rewrite cycle.
-    Returns True if the file was modified.
-    """
     raw = OUTPUT_ICS.read_bytes().decode("utf-8")
 
     new_esc = escape_ical(new_summary)
@@ -201,14 +205,12 @@ def patch_ics(uid: str, new_summary: str, state: dict) -> bool:
         nonlocal changed
         block = m.group(0)
 
-        # Only touch the block that contains this UID
         if f"UID:{uid}\r\n" not in block:
             return block
 
-        # Check if SUMMARY is already up to date
         existing = re.search(r"SUMMARY:[^\r\n]*(?:\r\n[ \t][^\r\n]*)*", block)
         if existing and existing.group(0) == f"SUMMARY:{new_esc}":
-            return block  # nothing to do
+            return block
 
         new_seq = state.get(uid, {}).get("sequence", 0) + 1
 
@@ -219,7 +221,6 @@ def patch_ics(uid: str, new_summary: str, state: dict) -> bool:
 
         changed = True
         prev = state.get(uid, {})
-        # Keep original hash so generate_ics.py can detect when to revert after the match
         state[uid] = {"hash": prev.get("hash", ""), "sequence": new_seq, "stamp": now_stamp}
         return block
 
@@ -245,22 +246,22 @@ def main() -> None:
     print(f"Live: {[m['match'] for m in live]}")
 
     try:
-        espn_events = fetch_espn()
+        fd_matches = fetch_live()
     except Exception as e:
-        print(f"ESPN fetch failed: {e}", file=sys.stderr)
+        print(f"football-data.org fetch failed: {e}", file=sys.stderr)
         sys.exit(1)
 
     state = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
 
     for m in live:
-        ev = find_espn_event(m["match"], espn_events)
-        if not ev:
-            print(f"  Not found on ESPN: {m['match']}")
+        fd = find_fd_match(m["match"], fd_matches)
+        if not fd:
+            print(f"  Not found on football-data.org: {m['match']}")
             continue
 
-        score_info = extract_score(ev, m["match"])
+        score_info = extract_score(fd, m["match"], m["kickoff"])
         if not score_info:
-            print(f"  Not started yet on ESPN: {m['match']}")
+            print(f"  Not started yet: {m['match']}")
             continue
 
         if score_info["minute"] == "FT":

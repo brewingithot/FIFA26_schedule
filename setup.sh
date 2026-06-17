@@ -55,7 +55,25 @@ else
 fi
 echo
 
-# 5. Generate and install launchd plist with correct paths
+# 5. football-data.org API token
+echo "--- football-data.org API token ---"
+EXISTING_TOKEN=$(security find-generic-password -a "fifa2026" -s "football-data-api" -w 2>/dev/null || true)
+if [ -n "$EXISTING_TOKEN" ]; then
+    echo "Token already in Keychain — skipping."
+else
+    echo "Enter your football-data.org API token:"
+    read -rs FD_TOKEN
+    echo
+    if [ -n "$FD_TOKEN" ]; then
+        security add-generic-password -a "fifa2026" -s "football-data-api" -w "$FD_TOKEN"
+        echo "Token saved to Keychain."
+    else
+        echo "Skipped — set FOOTBALL_DATA_TOKEN env var or re-run setup."
+    fi
+fi
+echo
+
+# 6. Generate and install launchd plist with correct paths
 echo "--- Installing launchd agent ---"
 cat > "$PLIST_DST" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
