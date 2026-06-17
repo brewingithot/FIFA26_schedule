@@ -29,7 +29,7 @@ SCORES_FILE = HERE / "scores.json"
 
 YEAR = 2026
 TZ = ZoneInfo("America/Los_Angeles")
-LIVE_WINDOW = timedelta(minutes=100)
+LIVE_WINDOW = timedelta(minutes=130)
 
 ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard"
 
