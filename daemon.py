@@ -138,6 +138,14 @@ def poll() -> bool:
 def main() -> None:
     log("=== daemon starting ===")
 
+    # If a previous run crashed mid-rebase, abort it so git is usable
+    rebase_dir = HERE / ".git" / "rebase-merge"
+    rebase_apply = HERE / ".git" / "rebase-apply"
+    if rebase_dir.exists() or rebase_apply.exists():
+        log("stale rebase detected — aborting")
+        git("rebase", "--abort")
+        log("rebase aborted, continuing")
+
     while True:
         today = datetime.now(timezone.utc).date()
         if today > TOURNAMENT_END:
