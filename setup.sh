@@ -67,20 +67,21 @@ cat > "$PLIST_DST" <<PLIST
 
     <key>ProgramArguments</key>
     <array>
-        <string>$REPO/local_runner.sh</string>
+        <string>$PYTHON</string>
+        <string>$REPO/daemon.py</string>
     </array>
 
-    <key>StartInterval</key>
-    <integer>300</integer>
+    <key>KeepAlive</key>
+    <true/>
 
     <key>StandardOutPath</key>
-    <string>$REPO/local_runner.log</string>
+    <string>$REPO/daemon.log</string>
 
     <key>StandardErrorPath</key>
-    <string>$REPO/local_runner.log</string>
+    <string>$REPO/daemon.log</string>
 
     <key>RunAtLoad</key>
-    <false/>
+    <true/>
 </dict>
 </plist>
 PLIST
@@ -93,7 +94,7 @@ echo
 echo "=== Setup complete ==="
 echo
 echo "Useful commands:"
-echo "  Start now:     launchctl start $PLIST_LABEL"
-echo "  Stop:          launchctl stop $PLIST_LABEL"
+echo "  Stop daemon:   launchctl stop $PLIST_LABEL"
+echo "  Start daemon:  launchctl start $PLIST_LABEL"
 echo "  Uninstall:     launchctl unload $PLIST_DST && rm $PLIST_DST"
-echo "  Watch logs:    tail -f $REPO/local_runner.log"
+echo "  Watch logs:    tail -f $REPO/daemon.log"
