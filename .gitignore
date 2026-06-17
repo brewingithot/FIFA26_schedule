@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .DS_Store
+com.fifa2026.livescores.plist
+local_runner.log
+~$*.xlsx
