@@ -72,70 +72,114 @@ This section is for whoever maintains this feed (or anyone forking the repo for 
 ### Prerequisites
 
 - Python 3.10 or newer
-- `openpyxl` — install with `pip3 install openpyxl`
-- Git, configured to push to your fork
+- `pip3 install openpyxl requests`
+- `gh` CLI authenticated (`gh auth login`)
+- football-data.org API token stored in Keychain (see Setup below)
 
-### Workflow
+### Fresh machine setup
 
 ```bash
 git clone https://github.com/brewingithot/FIFA26_schedule.git
 cd FIFA26_schedule
+./setup.sh   # installs deps, configures git, stores API token, installs launchd daemon
+```
 
-# 1. Edit the source spreadsheet
+### Two write paths to the .ics
+
+| Path | When to use |
+|---|---|
+| **Manual** — edit xlsx → `./update.sh` → push | Schedule changes, TBD→real teams, backfilling past scores |
+| **Live daemon** — `daemon.py` running locally | Automatic live scores during active matches |
+| **GitHub Actions** — `workflow_dispatch` | Live scores when away from your laptop |
+
+### Manual update workflow
+
+```bash
+# 1. Open the spreadsheet and make your changes
 open 2026_FIFA_World_Cup_Schedule.xlsx
 
-# 2. Regenerate the .ics file
+# Fill col G ("Score") with final scores, e.g. 2:1
+# Format: H:A (home goals : away goals)
+
+# 2. Regenerate the .ics
 ./update.sh
 
-# 3. Inspect the diff to make sure only the events you intended changed
+# 3. Review the diff
 git diff 2026_FIFA_World_Cup.ics
 
-# 4. Commit and push — subscribers' calendars pull on their next refresh
+# 4. Commit and push
 git add 2026_FIFA_World_Cup.ics state.json scores.json 2026_FIFA_World_Cup_Schedule.xlsx
 git commit -m "Describe what changed"
 git push
 ```
 
+### Live daemon (local macOS)
+
+`daemon.py` runs continuously, polling every 2 min during live matches and 5 min otherwise. Managed by launchd — starts on login, restarts on crash.
+
+```bash
+# Start
+launchctl start com.fifa2026.livescores
+
+# Stop
+launchctl stop com.fifa2026.livescores
+
+# Watch logs
+tail -f daemon.log
+```
+
+### GitHub Actions (manual trigger)
+
+The cron is disabled by default. Trigger manually when away from your laptop:
+
+```bash
+gh workflow run live_scores.yml --repo brewingithot/FIFA26_schedule
+```
+
+Or via GitHub.com → Actions → Live Score Updater → Run workflow.
+
+Requires `FOOTBALL_DATA_TOKEN` secret set in repo Settings → Secrets → Actions.
+
 ### What `update.sh` does under the hood
 
-1. Runs `generate_ics.py`, which reads `2026_FIFA_World_Cup_Schedule.xlsx` and writes `2026_FIFA_World_Cup.ics`.
-2. Maintains stable per-event UIDs derived from `(stage, kickoff time, stadium)` — *not* the team names. That way, when a `TBD vs TBD` knockout entry gets real teams, the UID stays the same and subscribers' calendars treat it as an **update** to the existing event, not a brand-new event.
-3. Tracks each event's content hash in `state.json`. Only events whose summary/location/time actually changed get a bumped `SEQUENCE` number and a fresh `LAST-MODIFIED` timestamp. Unchanged events stay byte-identical across runs, so subscribers don't see spurious update notifications.
-
-The script prints a summary on each run, e.g.:
-
-```
-Wrote 76 events to 2026_FIFA_World_Cup.ics (+0 added, 1 changed, 75 unchanged, 0 removed)
-```
+1. Scrubs author/org metadata from the xlsx (Excel writes your name into the file on save)
+2. Runs `generate_ics.py`, which reads `2026_FIFA_World_Cup_Schedule.xlsx` and writes `2026_FIFA_World_Cup.ics`
+3. Reads col G ("Score") from the xlsx — if a score is present, writes it to `scores.json` and bakes `FT (2:1)` into the event title
+4. Tracks each event's content hash in `state.json`. Only changed events get a bumped `SEQUENCE` number — unchanged events stay byte-identical across runs
 
 ### About `state.json`
 
-`state.json` is the source of truth for SEQUENCE numbers. **Always commit it alongside the `.ics`.** If it gets lost or deleted, the next regeneration treats every event as new and resets all SEQUENCE counts to `0`, which can cause some calendar clients to ignore future updates because they think they already have a "newer" copy.
+`state.json` is the source of truth for SEQUENCE numbers. **Always commit it alongside the `.ics`.** If it gets lost, the next regeneration resets all SEQUENCE counts to `0`, which can cause calendar clients to ignore future updates.
 
-### Generated file structure
+### File structure
 
 | File | Purpose |
 |---|---|
-| `2026_FIFA_World_Cup_Schedule.xlsx` | Source data — the only file you edit. Fill column G ("Score") with the final score (e.g. `2:1`) to bake it into the calendar |
-| `generate_ics.py` | Reads the xlsx, writes the .ics, updates state.json |
-| `update.sh` | Wrapper that runs the generator |
+| `2026_FIFA_World_Cup_Schedule.xlsx` | Source data. Col G ("Score") = final score input, e.g. `2:1` |
+| `generate_ics.py` | Reads xlsx, writes .ics, syncs col G scores → scores.json |
+| `update.sh` | Scrubs xlsx metadata then runs generate_ics.py |
 | `2026_FIFA_World_Cup.ics` | The artifact subscribers pull |
 | `state.json` | Per-event hash + SEQUENCE tracking |
-| `live_score_updater.py` | Patches the .ics with live scores during matches |
-| `.github/workflows/live_scores.yml` | Runs the updater every 5 minutes via GitHub Actions |
-| `scores.json` | Permanent record of final scores; populated from xlsx col G by generate_ics.py |
+| `scores.json` | Final scores keyed by event UID — single source of truth |
+| `live_score_updater.py` | Fetches live scores (ESPN primary, football-data.org fallback), patches .ics |
+| `daemon.py` | Long-running local daemon — polls every 2/5 min, handles git push |
+| `setup.sh` | One-shot setup for a fresh machine |
+| `.github/workflows/live_scores.yml` | GitHub Actions — manual trigger only (cron disabled) |
 
 ---
 
 ## Live score updates — how it works
 
-A GitHub Actions workflow runs `live_score_updater.py` every 5 minutes automatically. No server or manual intervention is needed.
+`live_score_updater.py` is the core scoring engine, used by both the local daemon and GitHub Actions.
 
-**What it does:**
-1. Checks if any match is currently in progress (`kickoff ≤ now ≤ kickoff + 100 min`)
-2. If yes, fetches the live score from ESPN's scoreboard API
-3. Patches the event's SUMMARY in the `.ics` with the current score and match minute
-4. Commits and pushes — subscribers' calendar apps pick up the update on their next poll
+**Source priority:**
+1. **ESPN** — used first; has live match minute data; covers featured matches
+2. **football-data.org** — fallback for matches ESPN doesn't cover (requires `FOOTBALL_DATA_TOKEN`)
+
+**Live window:** `kickoff ≤ now ≤ kickoff + 130 min` (covers 90 min + 30 min ET + penalties buffer)
+
+**Score format:** `Argentina vs France 67' (1:2) (Quarter-final)`
+Halftime shows `HT`, full time shows `FT`.
 
 **Subscribers don't need to do anything.** The `.ics` URL stays the same. As long as Auto-refresh is enabled in their calendar app, updates arrive automatically:
 
@@ -145,6 +189,3 @@ A GitHub Actions workflow runs `live_score_updater.py` every 5 minutes automatic
 | iPhone / iPad | Every 15 minutes (same setting synced via iCloud) |
 | Google Calendar | Every 12–24 hours (Google's fixed polling interval) |
 | Outlook | Every few hours (varies by client) |
-
-**Score format:** `Argentina vs France 67' (1:2) (Quarter-final)`
-Halftime shows `HT`, full time shows `FT`. After 100 minutes from kickoff, the workflow stops polling for that match.
