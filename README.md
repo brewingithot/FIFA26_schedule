@@ -51,6 +51,8 @@ Tap the `webcal://` link in Mail, Messages, or Safari — iOS will offer a **Sub
 
 Manual path: **Settings → Calendar → Accounts → Add Account → Other → Add Subscribed Calendar** → paste the HTTPS URL.
 
+> **Note:** iOS does not allow setting a custom refresh interval for subscribed calendars. However, if you use the same iCloud account on a Mac with Apple Calendar set to refresh every 5 minutes, updates sync to your iPhone via iCloud — so you still get near real-time score updates without needing to configure anything on iOS.
+
 ### Google Calendar
 
 Left sidebar → next to **Other calendars** → **+** → **From URL** → paste the HTTPS URL → **Add calendar**.
