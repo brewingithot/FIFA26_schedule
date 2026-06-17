@@ -391,12 +391,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:200b730c8001e7a1@fifa-world-cup-2026
-DTSTAMP:20260617T022301Z
-LAST-MODIFIED:20260617T022301Z
-SEQUENCE:5
+DTSTAMP:20260617T022407Z
+LAST-MODIFIED:20260617T022407Z
+SEQUENCE:6
 DTSTART;TZID=America/Los_Angeles:20260616T180000
 DTEND;TZID=America/Los_Angeles:20260616T181500
-SUMMARY:Argentina vs Algeria 59' (1:0) (Group Stage)
+SUMMARY:Argentina vs Algeria 61' (2:0) (Group Stage)
 LOCATION:Kansas City Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Argentina vs Algeria\nVenue: Kansas 
  City Stadium\, USA\nKickoff: Tue Jun 16\, 2026 at 18:00 America/Los_Angeles
