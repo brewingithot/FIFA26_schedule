@@ -43,7 +43,7 @@ Click this link from any browser, Mail, or Messages:
 webcal://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics
 ```
 
-…or in Calendar.app: **File → New Calendar Subscription…** and paste the HTTPS URL above. Set **Auto-refresh** to "Every 15 minutes" to get live score updates during matches.
+…or in Calendar.app: **File → New Calendar Subscription…** and paste the HTTPS URL above. Set **Auto-refresh** to "Every 5 minutes" to get live score updates during matches.
 
 ### iPhone / iPad
 
