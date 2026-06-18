@@ -530,12 +530,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:78058effefd99eeb@fifa-world-cup-2026
-DTSTAMP:20260618T204927Z
-LAST-MODIFIED:20260618T204927Z
-SEQUENCE:35
+DTSTAMP:20260618T205129Z
+LAST-MODIFIED:20260618T205129Z
+SEQUENCE:36
 DTSTART;TZID=America/Los_Angeles:20260618T120000
 DTEND;TZID=America/Los_Angeles:20260618T121500
-SUMMARY:Switzerland vs Bosnia 90' (2:0) (Group Stage)
+SUMMARY:Switzerland vs Bosnia 90'+2' (3:0) (Group Stage)
 LOCATION:SoFi Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Switzerland vs Bosnia\nVenue: SoFi S
  tadium\, USA\nKickoff: Thu Jun 18\, 2026 at 12:00 America/Los_Angeles
