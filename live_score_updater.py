@@ -127,7 +127,10 @@ def _norm(s: str) -> str:
 def _team_match_espn(our: str, espn_team: dict) -> bool:
     our_n = _norm(our)
     for key in ("displayName", "name", "shortDisplayName", "abbreviation"):
-        if _norm(espn_team.get(key, "")) == our_n:
+        val = _norm(espn_team.get(key, ""))
+        if val == our_n:
+            return True
+        if our_n and (our_n in val or val in our_n):
             return True
     return False
 
@@ -201,7 +204,11 @@ def fetch_live() -> list[dict]:
 def _team_match_fd(our: str, fd_team: dict) -> bool:
     our_n = _norm(our)
     for key in ("name", "shortName", "tla"):
-        if _norm(fd_team.get(key, "")) == our_n:
+        val = _norm(fd_team.get(key, ""))
+        if val == our_n:
+            return True
+        # Handle partial matches e.g. "Bosnia" matching "Bosnia and Herzegovina"
+        if our_n and (our_n in val or val in our_n):
             return True
     return False
 
