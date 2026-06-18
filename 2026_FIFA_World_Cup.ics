@@ -511,12 +511,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:883c8ee8924e0a01@fifa-world-cup-2026
-DTSTAMP:20260618T163616Z
-LAST-MODIFIED:20260618T163616Z
-SEQUENCE:18
+DTSTAMP:20260618T163816Z
+LAST-MODIFIED:20260618T163816Z
+SEQUENCE:19
 DTSTART;TZID=America/Los_Angeles:20260618T090000
 DTEND;TZID=America/Los_Angeles:20260618T091500
-SUMMARY:Czechia vs South Africa 36' (1:0) (Group Stage)
+SUMMARY:Czechia vs South Africa 38' (1:0) (Group Stage)
 LOCATION:Atlanta Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Czechia vs South Africa\nVenue: Atla
  nta Stadium\, USA\nKickoff: Thu Jun 18\, 2026 at 09:00 America/Los_Angeles
