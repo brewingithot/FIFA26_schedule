@@ -531,12 +531,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:78058effefd99eeb@fifa-world-cup-2026
-DTSTAMP:20260614T170157Z
-LAST-MODIFIED:20260614T170157Z
-SEQUENCE:0
+DTSTAMP:20260618T192858Z
+LAST-MODIFIED:20260618T192858Z
+SEQUENCE:1
 DTSTART;TZID=America/Los_Angeles:20260618T120000
 DTEND;TZID=America/Los_Angeles:20260618T121500
-SUMMARY:Switzerland vs Bosnia and Herzegovina (Group Stage)
+SUMMARY:Switzerland vs Bosnia 28' (0:0) (Group Stage)
 LOCATION:SoFi Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Switzerland vs Bosnia and Herzegovin
  a\nVenue: SoFi Stadium\, USA\nKickoff: Thu Jun 18\, 2026 at 12:00 America/L
