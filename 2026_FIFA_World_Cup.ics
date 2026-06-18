@@ -491,12 +491,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:ad8ef538edc5dfd7@fifa-world-cup-2026
-DTSTAMP:20260618T035935Z
-LAST-MODIFIED:20260618T035935Z
-SEQUENCE:53
+DTSTAMP:20260618T040135Z
+LAST-MODIFIED:20260618T040135Z
+SEQUENCE:54
 DTSTART;TZID=America/Los_Angeles:20260617T190000
 DTEND;TZID=America/Los_Angeles:20260617T191500
-SUMMARY:Uzbekistan vs Colombia 90'+8' (1:2) (Group Stage)
+SUMMARY:Uzbekistan vs Colombia 90'+10' (1:3) (Group Stage)
 LOCATION:Estadio Azteca\, Mexico
 DESCRIPTION:Stage: Group Stage\nMatch: Uzbekistan vs Colombia\nVenue: Estad
  io Azteca\, Mexico\nKickoff: Wed Jun 17\, 2026 at 19:00 America/Los_Angeles
