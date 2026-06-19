@@ -45,8 +45,13 @@ You only need to do this once. Your calendar app polls the URL automatically and
 
 Click this link from any browser, Mail, or Messages:
 
+With live scores:
 ```
 webcal://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics
+```
+No scores (spoiler-free):
+```
+webcal://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup_no_live_scores.ics
 ```
 
 …or in Calendar.app: **File → New Calendar Subscription…** and paste the HTTPS URL above. Set **Auto-refresh** to "Every 5 minutes" to get live score updates during matches.
@@ -55,19 +60,34 @@ webcal://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics
 
 Tap the `webcal://` link in Mail, Messages, or Safari — iOS will offer a **Subscribe** button.
 
+With live scores:
+```
+webcal://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics
+```
+No scores (spoiler-free):
+```
+webcal://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup_no_live_scores.ics
+```
+
 Manual path: **Settings → Calendar → Accounts → Add Account → Other → Add Subscribed Calendar** → paste the HTTPS URL.
 
 > **Note:** iOS does not allow setting a custom refresh interval for subscribed calendars. However, if you use the same iCloud account on a Mac with Apple Calendar set to refresh every 5 minutes, updates sync to your iPhone via iCloud — so you still get near real-time score updates without needing to configure anything on iOS.
 
 ### Google Calendar
 
-Left sidebar → next to **Other calendars** → **+** → **From URL** → paste the HTTPS URL → **Add calendar**.
+Left sidebar → next to **Other calendars** → **+** → **From URL** → paste one of the HTTPS URLs below → **Add calendar**.
+
+With live scores: `https://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics`
+No scores: `https://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup_no_live_scores.ics`
 
 Google polls every 12–24 hours, so updates can take up to a day to appear there.
 
 ### Outlook (web / Microsoft 365)
 
-**Add calendar → Subscribe from web** → paste the HTTPS URL → give it a name → **Import**.
+**Add calendar → Subscribe from web** → paste one of the HTTPS URLs below → give it a name → **Import**.
+
+With live scores: `https://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics`
+No scores: `https://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup_no_live_scores.ics`
 
 ### Removing the calendar later
 
