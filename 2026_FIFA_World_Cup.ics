@@ -610,12 +610,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:9b13a6cb868f5c8c@fifa-world-cup-2026
-DTSTAMP:20260619T220955Z
-LAST-MODIFIED:20260619T220955Z
-SEQUENCE:5
+DTSTAMP:20260619T221156Z
+LAST-MODIFIED:20260619T221156Z
+SEQUENCE:6
 DTSTART;TZID=America/Los_Angeles:20260619T150000
 DTEND;TZID=America/Los_Angeles:20260619T151500
-SUMMARY:Scotland vs Morocco 9' (0:1) (Group Stage)
+SUMMARY:Scotland vs Morocco 11' (0:1) (Group Stage)
 LOCATION:Boston Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Scotland vs Morocco\nVenue: Boston S
  tadium\, USA\nKickoff: Fri Jun 19\, 2026 at 15:00 America/Los_Angeles
