@@ -26,7 +26,9 @@ import openpyxl
 HERE = Path(__file__).resolve().parent
 SOURCE_XLSX = HERE / "2026_FIFA_World_Cup_Schedule.xlsx"
 OUTPUT_ICS = HERE / "2026_FIFA_World_Cup.ics"
+OUTPUT_ICS_NO_SCORES = HERE / "2026_FIFA_World_Cup_no_live_scores.ics"
 STATE_FILE = HERE / "state.json"
+STATE_FILE_NO_SCORES = HERE / "state_no_scores.json"
 SCORES_FILE = HERE / "scores.json"
 
 YEAR = 2026
@@ -148,14 +150,14 @@ def content_hash(payload: dict) -> str:
     return hashlib.sha1("\x00".join(parts).encode("utf-8")).hexdigest()
 
 
-def load_state() -> dict:
-    if STATE_FILE.exists():
-        return json.loads(STATE_FILE.read_text())
+def load_state(path: Path = STATE_FILE) -> dict:
+    if path.exists():
+        return json.loads(path.read_text())
     return {}
 
 
-def save_state(state: dict) -> None:
-    STATE_FILE.write_text(json.dumps(state, indent=2, sort_keys=True))
+def save_state(state: dict, path: Path = STATE_FILE) -> None:
+    path.write_text(json.dumps(state, indent=2, sort_keys=True))
 
 
 def build_vevent(payload: dict, sequence: int, stamp: str) -> list[str]:
@@ -182,36 +184,17 @@ def build_vevent(payload: dict, sequence: int, stamp: str) -> list[str]:
     ]
 
 
-def main() -> None:
-    wb = openpyxl.load_workbook(SOURCE_XLSX, data_only=True)
-    ws = wb["Schedule"]
-
-    events = []
-    for i, row in enumerate(ws.iter_rows(values_only=True)):
-        if i == 0:
-            continue
-        parsed = parse_row(row)
-        if parsed:
-            events.append(parsed)
-    events.sort(key=lambda e: e["start"])
-
-    state = load_state()
-    final_scores = json.loads(SCORES_FILE.read_text()) if SCORES_FILE.exists() else {}
-
-    # Write force scores through to scores.json so all consumers see them
-    force_applied = 0
-    for event in events:
-        if event.get("force_score"):
-            uid = make_uid(event)
-            if final_scores.get(uid) != event["force_score"]:
-                final_scores[uid] = event["force_score"]
-                force_applied += 1
-    if force_applied:
-        SCORES_FILE.write_text(json.dumps(final_scores, indent=2, sort_keys=True))
-        print(f"Applied {force_applied} force score(s) to {SCORES_FILE.name}")
-
+def generate_ics(
+    events: list,
+    final_scores: dict,
+    output_path: Path,
+    state_path: Path,
+    now_stamp: str,
+    cal_name: str,
+    cal_desc: str,
+) -> None:
+    state = load_state(state_path)
     new_state: dict = {}
-    now_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
     out_lines = [
         "BEGIN:VCALENDAR",
@@ -219,8 +202,8 @@ def main() -> None:
         f"PRODID:{PRODID}",
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
-        f"X-WR-CALNAME:{escape_text(CAL_NAME)}",
-        f"X-WR-CALDESC:{escape_text(CAL_DESC)}",
+        f"X-WR-CALNAME:{escape_text(cal_name)}",
+        f"X-WR-CALDESC:{escape_text(cal_desc)}",
         f"X-WR-TIMEZONE:{TZID}",
         "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
         "X-PUBLISHED-TTL:PT12H",
@@ -250,14 +233,58 @@ def main() -> None:
     out_lines.append("END:VCALENDAR")
 
     folded = [fold_line(line) for raw in out_lines for line in raw.splitlines()]
-    OUTPUT_ICS.write_bytes(("\r\n".join(folded) + "\r\n").encode("utf-8"))
+    output_path.write_bytes(("\r\n".join(folded) + "\r\n").encode("utf-8"))
 
     removed = len(set(state) - set(new_state))
-    save_state(new_state)
+    save_state(new_state, state_path)
 
     print(
-        f"Wrote {len(events)} events to {OUTPUT_ICS.name} "
+        f"Wrote {len(events)} events to {output_path.name} "
         f"(+{added} added, {changed} changed, {unchanged} unchanged, {removed} removed)"
+    )
+
+
+def main() -> None:
+    wb = openpyxl.load_workbook(SOURCE_XLSX, data_only=True)
+    ws = wb["Schedule"]
+
+    events = []
+    for i, row in enumerate(ws.iter_rows(values_only=True)):
+        if i == 0:
+            continue
+        parsed = parse_row(row)
+        if parsed:
+            events.append(parsed)
+    events.sort(key=lambda e: e["start"])
+
+    final_scores = json.loads(SCORES_FILE.read_text()) if SCORES_FILE.exists() else {}
+
+    # Write force scores through to scores.json so all consumers see them
+    force_applied = 0
+    for event in events:
+        if event.get("force_score"):
+            uid = make_uid(event)
+            if final_scores.get(uid) != event["force_score"]:
+                final_scores[uid] = event["force_score"]
+                force_applied += 1
+    if force_applied:
+        SCORES_FILE.write_text(json.dumps(final_scores, indent=2, sort_keys=True))
+        print(f"Applied {force_applied} force score(s) to {SCORES_FILE.name}")
+
+    now_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+    # Version 1: with live scores
+    generate_ics(
+        events, final_scores, OUTPUT_ICS, STATE_FILE, now_stamp,
+        CAL_NAME,
+        "All 76 matches of the 2026 FIFA World Cup. Times in Pacific. Includes live scores.",
+    )
+
+    # Version 2: no scores — clean titles only
+    generate_ics(
+        events, {}, OUTPUT_ICS_NO_SCORES, STATE_FILE_NO_SCORES, now_stamp,
+        f"{CAL_NAME} (No Scores)",
+        "All 76 matches of the 2026 FIFA World Cup. Times in Pacific. No live scores.",
     )
 
 

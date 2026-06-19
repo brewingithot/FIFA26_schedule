@@ -15,10 +15,16 @@ Argentina vs France 67' (1:2) (Quarter-final) ← second half
 Argentina vs France FT (3:3) (Quarter-final)  ← full time
 ```
 
-**Subscribe URL:**
+**Subscribe URLs:**
 
+With live scores (updates during matches):
 ```
 https://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup.ics
+```
+
+No scores — clean match titles only (spoiler-free):
+```
+https://brewingithot.github.io/FIFA26_schedule/2026_FIFA_World_Cup_no_live_scores.ics
 ```
 
 Times are in `America/Los_Angeles` and your calendar app will auto-convert to your local timezone.
@@ -162,8 +168,10 @@ Requires `FOOTBALL_DATA_TOKEN` secret set in repo Settings → Secrets → Actio
 | `2026_FIFA_World_Cup_Schedule.xlsx` | Source data. Col G ("Score") = final score input, e.g. `2:1` |
 | `generate_ics.py` | Reads xlsx, writes .ics, syncs col G scores → scores.json |
 | `update.sh` | Scrubs xlsx metadata then runs generate_ics.py |
-| `2026_FIFA_World_Cup.ics` | The artifact subscribers pull |
-| `state.json` | Per-event hash + SEQUENCE tracking |
+| `2026_FIFA_World_Cup.ics` | The artifact subscribers pull — includes live scores |
+| `2026_FIFA_World_Cup_no_live_scores.ics` | Spoiler-free version — clean match titles only, no scores ever |
+| `state.json` | Per-event hash + SEQUENCE tracking (scores version) |
+| `state_no_scores.json` | Per-event hash + SEQUENCE tracking (no-scores version) |
 | `scores.json` | Final scores keyed by event UID — single source of truth |
 | `live_score_updater.py` | Fetches live scores (ESPN primary, football-data.org fallback), patches .ics |
 | `daemon.py` | Long-running local daemon — polls every 2/5 min, handles git push |
