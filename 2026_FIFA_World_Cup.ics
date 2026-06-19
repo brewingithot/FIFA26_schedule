@@ -570,12 +570,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:827845afe5f4cc05@fifa-world-cup-2026
-DTSTAMP:20260619T024412Z
-LAST-MODIFIED:20260619T024412Z
-SEQUENCE:45
+DTSTAMP:20260619T024613Z
+LAST-MODIFIED:20260619T024613Z
+SEQUENCE:46
 DTSTART;TZID=America/Los_Angeles:20260618T180000
 DTEND;TZID=America/Los_Angeles:20260618T181500
-SUMMARY:Mexico vs South Korea 84' (1:0) (Group Stage)
+SUMMARY:Mexico vs South Korea 86' (1:0) (Group Stage)
 LOCATION:Estadio Akron\, Mexico
 DESCRIPTION:Stage: Group Stage\nMatch: Mexico vs South Korea\nVenue: Estadi
  o Akron\, Mexico\nKickoff: Thu Jun 18\, 2026 at 18:00 America/Los_Angeles
