@@ -670,12 +670,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:8d2a61d4ebc3672a@fifa-world-cup-2026
-DTSTAMP:20260620T184759Z
-LAST-MODIFIED:20260620T184759Z
-SEQUENCE:47
+DTSTAMP:20260620T185000Z
+LAST-MODIFIED:20260620T185000Z
+SEQUENCE:48
 DTSTART;TZID=America/Los_Angeles:20260620T100000
 DTEND;TZID=America/Los_Angeles:20260620T101500
-SUMMARY:Netherlands vs Sweden 87' (4:1) (Group Stage)
+SUMMARY:Netherlands vs Sweden 89' (4:1) (Group Stage)
 LOCATION:Houston Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Netherlands vs Sweden\nVenue: Housto
  n Stadium\, USA\nKickoff: Sat Jun 20\, 2026 at 10:00 America/Los_Angeles
