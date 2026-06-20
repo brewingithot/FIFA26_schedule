@@ -690,12 +690,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:c24f64a8c8cfe8c7@fifa-world-cup-2026
-DTSTAMP:20260620T212452Z
-LAST-MODIFIED:20260620T212452Z
-SEQUENCE:36
+DTSTAMP:20260620T212652Z
+LAST-MODIFIED:20260620T212652Z
+SEQUENCE:37
 DTSTART;TZID=America/Los_Angeles:20260620T130000
 DTEND;TZID=America/Los_Angeles:20260620T131500
-SUMMARY:Germany vs Ivory Coast 61' (0:1) (Group Stage)
+SUMMARY:Germany vs Ivory Coast 63' (0:1) (Group Stage)
 LOCATION:Toronto Stadium\, Canada
 DESCRIPTION:Stage: Group Stage\nMatch: Germany vs Ivory Coast\nVenue: Toron
  to Stadium\, Canada\nKickoff: Sat Jun 20\, 2026 at 13:00 America/Los_Angele
