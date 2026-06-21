@@ -751,12 +751,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:e8cff570d7bfff8d@fifa-world-cup-2026
-DTSTAMP:20260621T174839Z
-LAST-MODIFIED:20260621T174839Z
-SEQUENCE:48
+DTSTAMP:20260621T175041Z
+LAST-MODIFIED:20260621T175041Z
+SEQUENCE:49
 DTSTART;TZID=America/Los_Angeles:20260621T090000
 DTEND;TZID=America/Los_Angeles:20260621T091500
-SUMMARY:Spain vs Saudi Arabia 85' (4:0) (Group Stage)
+SUMMARY:Spain vs Saudi Arabia 87' (4:0) (Group Stage)
 LOCATION:Atlanta Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Spain vs Saudi Arabia\nVenue: Atlant
  a Stadium\, USA\nKickoff: Sun Jun 21\, 2026 at 09:00 America/Los_Angeles
