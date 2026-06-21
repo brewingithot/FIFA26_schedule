@@ -731,12 +731,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:456c37b654650ad8@fifa-world-cup-2026
-DTSTAMP:20260614T170157Z
-LAST-MODIFIED:20260614T170157Z
-SEQUENCE:0
+DTSTAMP:20260621T070926Z
+LAST-MODIFIED:20260621T070926Z
+SEQUENCE:1
 DTSTART;TZID=America/Los_Angeles:20260620T220000
 DTEND;TZID=America/Los_Angeles:20260620T221500
-SUMMARY:Tunisia vs Japan (Group Stage)
+SUMMARY:Tunisia vs Japan FT (0:4) (Group Stage)
 LOCATION:Monterrey Stadium\, Mexico
 DESCRIPTION:Stage: Group Stage\nMatch: Tunisia vs Japan\nVenue: Monterrey S
  tadium\, Mexico\nKickoff: Sat Jun 20\, 2026 at 22:00 America/Los_Angeles
