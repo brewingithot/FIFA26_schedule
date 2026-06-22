@@ -811,12 +811,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:2d1c1a29036a8bae@fifa-world-cup-2026
-DTSTAMP:20260622T023758Z
-LAST-MODIFIED:20260622T023758Z
-SEQUENCE:44
+DTSTAMP:20260622T024000Z
+LAST-MODIFIED:20260622T024000Z
+SEQUENCE:45
 DTSTART;TZID=America/Los_Angeles:20260621T180000
 DTEND;TZID=America/Los_Angeles:20260621T181500
-SUMMARY:New Zealand vs Egypt 77' (1:2) (Group Stage)
+SUMMARY:New Zealand vs Egypt 79' (1:2) (Group Stage)
 LOCATION:BC Place Vancouver\, Canada
 DESCRIPTION:Stage: Group Stage\nMatch: New Zealand vs Egypt\nVenue: BC Plac
  e Vancouver\, Canada\nKickoff: Sun Jun 21\, 2026 at 18:00 America/Los_Angel
