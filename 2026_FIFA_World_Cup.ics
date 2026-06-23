@@ -913,12 +913,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:38ac97ffd4b95bf1@fifa-world-cup-2026
-DTSTAMP:20260623T175343Z
-LAST-MODIFIED:20260623T175343Z
-SEQUENCE:27
+DTSTAMP:20260623T181147Z
+LAST-MODIFIED:20260623T181147Z
+SEQUENCE:28
 DTSTART;TZID=America/Los_Angeles:20260623T100000
 DTEND;TZID=America/Los_Angeles:20260623T101500
-SUMMARY:Portugal vs Uzbekistan HT (3:0) (Group Stage)
+SUMMARY:Portugal vs Uzbekistan 47' (3:0) (Group Stage)
 LOCATION:Houston Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Portugal vs Uzbekistan\nVenue: Houst
  on Stadium\, USA\nKickoff: Tue Jun 23\, 2026 at 10:00 America/Los_Angeles
