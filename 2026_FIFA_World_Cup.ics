@@ -953,12 +953,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:76d8734f334179ae@fifa-world-cup-2026
-DTSTAMP:20260623T233357Z
-LAST-MODIFIED:20260623T233357Z
-SEQUENCE:17
+DTSTAMP:20260623T233559Z
+LAST-MODIFIED:20260623T233559Z
+SEQUENCE:18
 DTSTART;TZID=America/Los_Angeles:20260623T160000
 DTEND;TZID=America/Los_Angeles:20260623T161500
-SUMMARY:Panama vs Croatia 33' (0:0) (Group Stage)
+SUMMARY:Panama vs Croatia 35' (0:0) (Group Stage)
 LOCATION:Toronto Stadium\, Canada
 DESCRIPTION:Stage: Group Stage\nMatch: Panama vs Croatia\nVenue: Toronto St
  adium\, Canada\nKickoff: Tue Jun 23\, 2026 at 16:00 America/Los_Angeles
