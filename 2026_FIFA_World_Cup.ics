@@ -993,12 +993,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:43682e82cb24ce97@fifa-world-cup-2026
-DTSTAMP:20260624T193844Z
-LAST-MODIFIED:20260624T193844Z
-SEQUENCE:19
+DTSTAMP:20260624T194047Z
+LAST-MODIFIED:20260624T194047Z
+SEQUENCE:20
 DTSTART;TZID=America/Los_Angeles:20260624T120000
 DTEND;TZID=America/Los_Angeles:20260624T121500
-SUMMARY:Switzerland vs Canada 38' (0:0) (Group Stage)
+SUMMARY:Switzerland vs Canada 40' (0:0) (Group Stage)
 LOCATION:BC Place Vancouver\, Canada
 DESCRIPTION:Stage: Group Stage\nMatch: Switzerland vs Canada\nVenue: BC Pla
  ce Vancouver\, Canada\nKickoff: Wed Jun 24\, 2026 at 12:00 America/Los_Ange
