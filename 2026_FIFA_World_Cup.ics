@@ -1074,12 +1074,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:0abeae997b28e1b7@fifa-world-cup-2026
-DTSTAMP:20260625T013809Z
-LAST-MODIFIED:20260625T013809Z
-SEQUENCE:20
+DTSTAMP:20260625T014011Z
+LAST-MODIFIED:20260625T014011Z
+SEQUENCE:21
 DTSTART;TZID=America/Los_Angeles:20260624T180000
 DTEND;TZID=America/Los_Angeles:20260624T181500
-SUMMARY:Czechia vs Mexico 38' (0:0) (Group Stage)
+SUMMARY:Czechia vs Mexico 39' (0:0) (Group Stage)
 LOCATION:Estadio Banorte\, Mexico
 DESCRIPTION:Stage: Group Stage\nMatch: Czechia vs Mexico\nVenue: Estadio Ba
  norte\, Mexico\nKickoff: Wed Jun 24\, 2026 at 18:00 America/Los_Angeles
@@ -1094,12 +1094,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:d2fd6cb8f8428aa9@fifa-world-cup-2026
-DTSTAMP:20260625T013809Z
-LAST-MODIFIED:20260625T013809Z
-SEQUENCE:19
+DTSTAMP:20260625T014011Z
+LAST-MODIFIED:20260625T014011Z
+SEQUENCE:20
 DTSTART;TZID=America/Los_Angeles:20260624T180000
 DTEND;TZID=America/Los_Angeles:20260624T181500
-SUMMARY:South Africa vs South Korea 37' (0:0) (Group Stage)
+SUMMARY:South Africa vs South Korea 39' (0:0) (Group Stage)
 LOCATION:Estadio BBVA\, Mexico
 DESCRIPTION:Stage: Group Stage\nMatch: South Africa vs South Korea\nVenue: 
  Estadio BBVA\, Mexico\nKickoff: Wed Jun 24\, 2026 at 18:00 America/Los_Ange
