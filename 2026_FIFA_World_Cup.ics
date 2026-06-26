@@ -1237,12 +1237,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:62a49bc968bfa0a3@fifa-world-cup-2026
-DTSTAMP:20260626T201018Z
-LAST-MODIFIED:20260626T201018Z
-SEQUENCE:35
+DTSTAMP:20260626T201220Z
+LAST-MODIFIED:20260626T201220Z
+SEQUENCE:36
 DTSTART;TZID=America/Los_Angeles:20260626T120000
 DTEND;TZID=America/Los_Angeles:20260626T121500
-SUMMARY:Norway vs France 46' (1:3) (Group Stage)
+SUMMARY:Norway vs France 48' (1:3) (Group Stage)
 LOCATION:Massachusetts Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Norway vs France\nVenue: Massachuset
  ts Stadium\, USA\nKickoff: Fri Jun 26\, 2026 at 12:00 America/Los_Angeles
