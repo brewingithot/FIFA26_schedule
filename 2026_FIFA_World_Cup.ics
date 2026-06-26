@@ -1156,12 +1156,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:a27e24b883c561ba@fifa-world-cup-2026
-DTSTAMP:20260625T235110Z
-LAST-MODIFIED:20260625T235110Z
-SEQUENCE:26
+DTSTAMP:20260626T000513Z
+LAST-MODIFIED:20260626T000513Z
+SEQUENCE:27
 DTSTART;TZID=America/Los_Angeles:20260625T160000
 DTEND;TZID=America/Los_Angeles:20260625T161500
-SUMMARY:Tunisia vs Netherlands HT (0:2) (Group Stage)
+SUMMARY:Tunisia vs Netherlands 46' (0:2) (Group Stage)
 LOCATION:Kansas City Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Tunisia vs Netherlands\nVenue: Kansa
  s City Stadium\, USA\nKickoff: Thu Jun 25\, 2026 at 16:00 America/Los_Angel
