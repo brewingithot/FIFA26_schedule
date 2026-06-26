@@ -1237,12 +1237,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:62a49bc968bfa0a3@fifa-world-cup-2026
-DTSTAMP:20260626T190520Z
-LAST-MODIFIED:20260626T190520Z
-SEQUENCE:3
+DTSTAMP:20260626T190723Z
+LAST-MODIFIED:20260626T190723Z
+SEQUENCE:4
 DTSTART;TZID=America/Los_Angeles:20260626T120000
 DTEND;TZID=America/Los_Angeles:20260626T121500
-SUMMARY:Norway vs France 3' (0:0) (Group Stage)
+SUMMARY:Norway vs France 5' (0:0) (Group Stage)
 LOCATION:Massachusetts Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Norway vs France\nVenue: Massachuset
  ts Stadium\, USA\nKickoff: Fri Jun 26\, 2026 at 12:00 America/Los_Angeles
@@ -1257,12 +1257,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:995da56c48d21311@fifa-world-cup-2026
-DTSTAMP:20260626T190520Z
-LAST-MODIFIED:20260626T190520Z
-SEQUENCE:2
+DTSTAMP:20260626T190723Z
+LAST-MODIFIED:20260626T190723Z
+SEQUENCE:3
 DTSTART;TZID=America/Los_Angeles:20260626T120000
 DTEND;TZID=America/Los_Angeles:20260626T121500
-SUMMARY:Senegal vs Iraq 3' (0:0) (Group Stage)
+SUMMARY:Senegal vs Iraq 5' (1:0) (Group Stage)
 LOCATION:Toronto Stadium\, Canada
 DESCRIPTION:Stage: Group Stage\nMatch: Senegal vs Iraq\nVenue: Toronto Stad
  ium\, Canada\nKickoff: Fri Jun 26\, 2026 at 12:00 America/Los_Angeles
