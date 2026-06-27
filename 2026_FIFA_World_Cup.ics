@@ -1297,12 +1297,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:dd02e3498faf877a@fifa-world-cup-2026
-DTSTAMP:20260627T005335Z
-LAST-MODIFIED:20260627T005335Z
-SEQUENCE:28
+DTSTAMP:20260627T010939Z
+LAST-MODIFIED:20260627T010939Z
+SEQUENCE:29
 DTSTART;TZID=America/Los_Angeles:20260626T170000
 DTEND;TZID=America/Los_Angeles:20260626T171500
-SUMMARY:Cape Verde vs Saudi Arabia HT (0:0) (Group Stage)
+SUMMARY:Cape Verde vs Saudi Arabia 46' (0:0) (Group Stage)
 LOCATION:Houston Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Cape Verde vs Saudi Arabia\nVenue: H
  ouston Stadium\, USA\nKickoff: Fri Jun 26\, 2026 at 17:00 America/Los_Angel
