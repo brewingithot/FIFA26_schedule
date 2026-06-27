@@ -1277,12 +1277,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:cd9e735ceaff62d1@fifa-world-cup-2026
-DTSTAMP:20260627T005536Z
-LAST-MODIFIED:20260627T005536Z
-SEQUENCE:27
+DTSTAMP:20260627T011140Z
+LAST-MODIFIED:20260627T011140Z
+SEQUENCE:28
 DTSTART;TZID=America/Los_Angeles:20260626T170000
 DTEND;TZID=America/Los_Angeles:20260626T171500
-SUMMARY:Uruguay vs Spain HT (0:1) (Group Stage)
+SUMMARY:Uruguay vs Spain 47' (0:1) (Group Stage)
 LOCATION:Estadio Akron\, Mexico
 DESCRIPTION:Stage: Group Stage\nMatch: Uruguay vs Spain\nVenue: Estadio Akr
  on\, Mexico\nKickoff: Fri Jun 26\, 2026 at 17:00 America/Los_Angeles
@@ -1297,12 +1297,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:dd02e3498faf877a@fifa-world-cup-2026
-DTSTAMP:20260627T010939Z
-LAST-MODIFIED:20260627T010939Z
-SEQUENCE:29
+DTSTAMP:20260627T011140Z
+LAST-MODIFIED:20260627T011140Z
+SEQUENCE:30
 DTSTART;TZID=America/Los_Angeles:20260626T170000
 DTEND;TZID=America/Los_Angeles:20260626T171500
-SUMMARY:Cape Verde vs Saudi Arabia 46' (0:0) (Group Stage)
+SUMMARY:Cape Verde vs Saudi Arabia 48' (0:0) (Group Stage)
 LOCATION:Houston Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Cape Verde vs Saudi Arabia\nVenue: H
  ouston Stadium\, USA\nKickoff: Fri Jun 26\, 2026 at 17:00 America/Los_Angel
