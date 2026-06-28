@@ -125,23 +125,40 @@ cd FIFA26_schedule
 ### Manual update workflow
 
 ```bash
-# 1. Open the spreadsheet and make your changes
-open 2026_FIFA_World_Cup_Schedule.xlsx
+# 1. Sync schedule from APIs (fixes times, fills scores, rebuilds knockout rows)
+python3 update_xlsx.py
 
-# Fill col G ("Score") with final scores, e.g. 2:1
-# Format: H:A (home goals : away goals)
+# 2. Run the timing gate — must PASS before committing
+python3 test_schedule.py
 
-# 2. Regenerate the .ics
+# 3. Regenerate the .ics
 ./update.sh
 
-# 3. Review the diff
+# 4. Review the diff
 git diff 2026_FIFA_World_Cup.ics
 
-# 4. Commit and push
+# 5. Commit and push
 git add 2026_FIFA_World_Cup.ics state.json scores.json 2026_FIFA_World_Cup_Schedule.xlsx
 git commit -m "Describe what changed"
 git push
 ```
+
+### `test_schedule.py` — schedule timing gate
+
+Verifies that every game's date and time in the xlsx matches the authoritative API schedules:
+- **Knockout rounds** — cross-checked against ESPN
+- **Group stage** — cross-checked against football-data.org
+
+Run it after `update_xlsx.py` and before pushing. Exits `0` on success, `1` if any mismatch is found.
+
+```bash
+python3 test_schedule.py
+# PASS — all xlsx timings match API schedules.
+# or
+# FAIL — 2 timing mismatch(es): ...
+```
+
+If it fails, re-run `python3 update_xlsx.py` to auto-correct, then test again.
 
 ### Live daemon (local macOS)
 
@@ -195,6 +212,8 @@ Requires `FOOTBALL_DATA_TOKEN` secret set in repo Settings → Secrets → Actio
 | `scores.json` | Final scores keyed by event UID — single source of truth |
 | `live_score_updater.py` | Fetches live scores (ESPN primary, football-data.org fallback), patches .ics |
 | `daemon.py` | Long-running local daemon — polls every 2/5 min, handles git push |
+| `update_xlsx.py` | Syncs schedule + scores from ESPN and football-data.org into the xlsx |
+| `test_schedule.py` | Timing gate — verifies xlsx dates/times match APIs; run before pushing |
 | `setup.sh` | One-shot setup for a fresh machine |
 | `.github/workflows/live_scores.yml` | GitHub Actions — manual trigger only (cron disabled) |
 
