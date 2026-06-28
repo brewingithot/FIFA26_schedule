@@ -1499,12 +1499,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1ae6bbc193d40df@fifa-world-cup-2026
-DTSTAMP:20260628T020320Z
-LAST-MODIFIED:20260628T020320Z
-SEQUENCE:2
+DTSTAMP:20260628T020522Z
+LAST-MODIFIED:20260628T020522Z
+SEQUENCE:3
 DTSTART;TZID=America/Los_Angeles:20260627T190000
 DTEND;TZID=America/Los_Angeles:20260627T191500
-SUMMARY:Algeria vs Austria 3' (0:0) (Group Stage)
+SUMMARY:Algeria vs Austria 4' (0:0) (Group Stage)
 LOCATION:Kansas City Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Algeria vs Austria\nVenue: Kansas Ci
  ty Stadium\, USA\nKickoff: Sat Jun 27\, 2026 at 19:00 America/Los_Angeles
