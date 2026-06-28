@@ -245,21 +245,28 @@ def main() -> None:
     print(f"Group stage games : {len(existing_gs_teams)}")
     print(f"First knockout row: {first_knockout_row}\n")
 
-    print("Backfilling group stage scores...")
-    gs_scores = 0
+    print("Syncing group stage dates, times and scores...")
+    gs_scores = gs_times = 0
     for row in ws.iter_rows(min_row=2):
         if str(row[0].value or "").strip() != GROUP_STAGE:
             continue
         match_str = str(row[3].value or "").strip()
-        if " vs " not in match_str or row[SCORE_COL - 1].value:
+        if " vs " not in match_str:
             continue
         h, a  = match_str.split(" vs ", 1)
         entry = fd_by_teams.get(frozenset({h.strip().lower(), a.strip().lower()}))
-        if entry and entry["status"] == "FINISHED" and entry["score"]:
+        if not entry:
+            continue
+        if row[1].value != entry["date"] or row[2].value != entry["time"]:
+            print(f"  [time]  {match_str}: {row[1].value} {row[2].value} -> {entry['date']} {entry['time']}")
+            row[1].value = entry["date"]
+            row[2].value = entry["time"]
+            gs_times += 1
+        if not row[SCORE_COL - 1].value and entry["status"] == "FINISHED" and entry["score"]:
             row[SCORE_COL - 1].value = entry["score"]
             gs_scores += 1
-            print(f"  {match_str} -> {entry['score']}")
-    print(f"  {gs_scores} filled\n")
+            print(f"  [score] {match_str} -> {entry['score']}")
+    print(f"  {gs_times} times fixed, {gs_scores} scores filled\n")
 
     md3_missing = sorted(
         [e for k, e in fd_by_teams.items()
