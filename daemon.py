@@ -76,12 +76,14 @@ def commit_and_push() -> bool:
         return False
 
     for attempt in range(1, 4):
-        pull = git("pull", "--rebase")
-        push = git("push")
-        if push.returncode == 0:
-            return True
-        log(f"push attempt {attempt} failed — retrying in {attempt * 2}s")
-        time.sleep(attempt * 2)
+            pull = git("pull", "--rebase")
+            if pull.returncode != 0:
+                log(f"pull failed: {pull.stderr.strip()}")
+            push = git("push")
+            if push.returncode == 0:
+                return True
+            log(f"push attempt {attempt} failed: {push.stderr.strip()}")
+            time.sleep(attempt * 2)
 
     log("all push attempts failed")
     return False
@@ -177,7 +179,7 @@ def main() -> None:
             updated = poll()
             if updated:
                 pushed = commit_and_push()
-                log(f"push: {'ok' if pushed else 'nothing to push'}")
+                log(f"push: {'ok' if pushed else 'FAILED — check token/upstream'}")
             interval = POLL_INTERVAL_LIVE if find_live(read_schedule()) else POLL_INTERVAL_IDLE
         except Exception as e:
             log(f"ERROR: {e}")
