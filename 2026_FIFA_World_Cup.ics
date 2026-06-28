@@ -1479,12 +1479,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:b7321a3c5d26f5cc@fifa-world-cup-2026
-DTSTAMP:20260628T022841Z
-LAST-MODIFIED:20260628T022841Z
-SEQUENCE:26
+DTSTAMP:20260628T022952Z
+LAST-MODIFIED:20260628T022952Z
+SEQUENCE:27
 DTSTART;TZID=America/Los_Angeles:20260627T190000
 DTEND;TZID=America/Los_Angeles:20260627T191500
-SUMMARY:Jordan vs Argentina 27' (0:1) (Group Stage)
+SUMMARY:Jordan vs Argentina 29' (0:1) (Group Stage)
 LOCATION:Arlington Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Jordan vs Argentina\nVenue: Arlingto
  n Stadium\, USA\nKickoff: Sat Jun 27\, 2026 at 19:00 America/Los_Angeles
@@ -1499,12 +1499,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1ae6bbc193d40df@fifa-world-cup-2026
-DTSTAMP:20260628T022841Z
-LAST-MODIFIED:20260628T022841Z
-SEQUENCE:25
+DTSTAMP:20260628T022952Z
+LAST-MODIFIED:20260628T022952Z
+SEQUENCE:26
 DTSTART;TZID=America/Los_Angeles:20260627T190000
 DTEND;TZID=America/Los_Angeles:20260627T191500
-SUMMARY:Algeria vs Austria 28' (0:0) (Group Stage)
+SUMMARY:Algeria vs Austria 29' (0:1) (Group Stage)
 LOCATION:Kansas City Stadium\, USA
 DESCRIPTION:Stage: Group Stage\nMatch: Algeria vs Austria\nVenue: Kansas Ci
  ty Stadium\, USA\nKickoff: Sat Jun 27\, 2026 at 19:00 America/Los_Angeles
