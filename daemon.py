@@ -59,7 +59,7 @@ def git(*args) -> subprocess.CompletedProcess:
 
 
 def commit_and_push() -> bool:
-    git("pull", "--rebase", "origin", "main")
+    git("pull", "--rebase")
 
     git("add", "2026_FIFA_World_Cup.ics", "state.json")
     if (HERE / "scores.json").exists():
@@ -76,7 +76,7 @@ def commit_and_push() -> bool:
         return False
 
     for attempt in range(1, 4):
-        pull = git("pull", "--rebase", "origin", "main")
+        pull = git("pull", "--rebase")
         push = git("push")
         if push.returncode == 0:
             return True
