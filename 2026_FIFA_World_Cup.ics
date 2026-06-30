@@ -1579,12 +1579,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:4222953b9f4ad0ce@fifa-world-cup-2026
-DTSTAMP:20260630T014152Z
-LAST-MODIFIED:20260630T014152Z
-SEQUENCE:39
+DTSTAMP:20260630T014308Z
+LAST-MODIFIED:20260630T014308Z
+SEQUENCE:40
 DTSTART;TZID=America/Los_Angeles:20260629T180000
 DTEND;TZID=America/Los_Angeles:20260629T181500
-SUMMARY:Netherlands vs Morocco 41' (0:0) (Round of 32)
+SUMMARY:Netherlands vs Morocco 42' (0:0) (Round of 32)
 LOCATION:Monterrey Stadium\, Mexico
 DESCRIPTION:Stage: Round of 32\nMatch: Netherlands vs Morocco\nVenue: Monte
  rrey Stadium\, Mexico\nKickoff: Mon Jun 29\, 2026 at 18:00 America/Los_Ange
