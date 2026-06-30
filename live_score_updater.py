@@ -174,9 +174,23 @@ def extract_score_espn(ev: dict, match_str: str) -> dict | None:
     else:
         score = f"{away_c.get('score', 0)}:{home_c.get('score', 0)}"
 
+    status_name = stype.get("name", "")
+
     if state == "post":
-        minute = "FT"
-    elif stype.get("name") == "STATUS_HALFTIME":
+        if status_name == "STATUS_FINAL_PEN":
+            # Include penalty shootout score if available
+            if _team_match_espn(t1, home_c.get("team", {})):
+                h_pen = home_c.get("shootoutScore")
+                a_pen = away_c.get("shootoutScore")
+            else:
+                h_pen = away_c.get("shootoutScore")
+                a_pen = home_c.get("shootoutScore")
+            if h_pen is not None and a_pen is not None:
+                score = f"{score}, {h_pen}:{a_pen}p"
+            minute = "FT-Pens"
+        else:
+            minute = "FT"
+    elif status_name == "STATUS_HALFTIME":
         minute = "HT"
     else:
         detail = stype.get("detail", "")
@@ -361,7 +375,7 @@ def main() -> None:
             print(f"  Not found on any source: {m['match']}")
             continue
 
-        if score_info["minute"] == "FT":
+        if score_info["minute"] in ("FT", "FT-Pens"):
             save_final_score(m["uid"], score_info["score"])
 
         summary = (

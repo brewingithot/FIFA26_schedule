@@ -116,11 +116,11 @@ def fmt_local(dt: datetime) -> str:
 def build_event_payload(event: dict, final_scores: dict | None = None) -> dict:
     uid = make_uid(event)
     score = (final_scores or {}).get(uid)
-    summary = (
-        f"{event['match']} FT ({score}) ({event['stage']})"
-        if score else
-        f"{event['match']} ({event['stage']})"
-    )
+    if score:
+        ft_label = "FT-Pens" if "p" in score else "FT"
+        summary = f"{event['match']} {ft_label} ({score}) ({event['stage']})"
+    else:
+        summary = f"{event['match']} ({event['stage']})"
     location = ", ".join(p for p in (event["stadium"], event["country"]) if p)
     description = (
         f"Stage: {event['stage']}\n"
