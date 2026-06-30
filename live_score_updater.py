@@ -269,6 +269,29 @@ def extract_score_fd(fd_match: dict, match_str: str, kickoff: datetime) -> dict 
     return {"score": score_str, "minute": minute}
 
 
+# ── Winner trophy ─────────────────────────────────────────────────────────────
+
+def _trophy_match(match: str, score: str) -> str:
+    """Prefix the winning team with 🏆. No-op for draws or unparseable scores."""
+    parts = match.split(" vs ", 1)
+    if len(parts) != 2:
+        return match
+    home, away = parts[0].strip(), parts[1].strip()
+    try:
+        if "p" in score:
+            pen = score.split(", ", 1)[1].rstrip("p")
+            h, a = int(pen.split(":")[0]), int(pen.split(":")[1])
+        else:
+            h, a = int(score.split(":")[0]), int(score.split(":")[1])
+        if h > a:
+            return f"🏆 {home} vs {away}"
+        elif a > h:
+            return f"{home} vs 🏆 {away}"
+    except Exception:
+        pass
+    return match
+
+
 # ── Final score persistence ───────────────────────────────────────────────────
 
 def save_final_score(uid: str, score: str) -> None:
@@ -376,8 +399,10 @@ def main() -> None:
         if score_info["minute"] in ("FT", "FT-Pens"):
             save_final_score(m["uid"], score_info["score"])
 
+        match_display = _trophy_match(m["match"], score_info["score"]) \
+            if score_info["minute"] in ("FT", "FT-Pens") else m["match"]
         summary = (
-            f"{m['match']} {score_info['minute']} "
+            f"{match_display} {score_info['minute']} "
             f"({score_info['score']}) ({m['stage']})"
         )
         updated = patch_ics(m["uid"], summary, state)

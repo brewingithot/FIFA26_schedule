@@ -113,12 +113,33 @@ def fmt_local(dt: datetime) -> str:
     return dt.strftime("%Y%m%dT%H%M%S")
 
 
+def trophy_match(match: str, score: str) -> str:
+    """Prefix the winning team with 🏆. No-op for draws or unparseable scores."""
+    parts = match.split(" vs ", 1)
+    if len(parts) != 2:
+        return match
+    home, away = parts[0].strip(), parts[1].strip()
+    try:
+        if "p" in score:
+            pen = score.split(", ", 1)[1].rstrip("p")
+            h, a = int(pen.split(":")[0]), int(pen.split(":")[1])
+        else:
+            h, a = int(score.split(":")[0]), int(score.split(":")[1])
+        if h > a:
+            return f"🏆 {home} vs {away}"
+        elif a > h:
+            return f"{home} vs 🏆 {away}"
+    except Exception:
+        pass
+    return match
+
+
 def build_event_payload(event: dict, final_scores: dict | None = None) -> dict:
     uid = make_uid(event)
     score = (final_scores or {}).get(uid)
     if score:
         ft_label = "FT-Pens" if "p" in score else "FT"
-        summary = f"{event['match']} {ft_label} ({score}) ({event['stage']})"
+        summary = f"{trophy_match(event['match'], score)} {ft_label} ({score}) ({event['stage']})"
     else:
         summary = f"{event['match']} ({event['stage']})"
     location = ", ".join(p for p in (event["stadium"], event["country"]) if p)
