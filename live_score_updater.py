@@ -178,15 +178,13 @@ def extract_score_espn(ev: dict, match_str: str) -> dict | None:
 
     if state == "post":
         if status_name == "STATUS_FINAL_PEN":
-            # Include penalty shootout score if available
             if _team_match_espn(t1, home_c.get("team", {})):
                 h_pen = home_c.get("shootoutScore")
                 a_pen = away_c.get("shootoutScore")
             else:
                 h_pen = away_c.get("shootoutScore")
                 a_pen = home_c.get("shootoutScore")
-            if h_pen is not None and a_pen is not None:
-                score = f"{score}, {h_pen}:{a_pen}p"
+            score = f"{score}, {h_pen}:{a_pen}p" if h_pen is not None else score
             minute = "FT-Pens"
         else:
             minute = "FT"

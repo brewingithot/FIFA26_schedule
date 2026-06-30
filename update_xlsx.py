@@ -153,7 +153,13 @@ def fetch_espn_knockout() -> list[dict]:
             away = norm_espn_team(away_c.get("team", {}).get("displayName", "TBD"))
             score = ""
             if status.get("state") == "post":
-                score = f"{home_c.get('score', 0)}:{away_c.get('score', 0)}"
+                if status.get("name") == "STATUS_FINAL_PEN":
+                    h_pen = home_c.get("shootoutScore")
+                    a_pen = away_c.get("shootoutScore")
+                    aet = f"{home_c.get('score', 0)}:{away_c.get('score', 0)}"
+                    score = f"{aet}, {h_pen}:{a_pen}p" if h_pen is not None else aet
+                else:
+                    score = f"{home_c.get('score', 0)}:{away_c.get('score', 0)}"
             fixtures.append({
                 "stage":    stage,
                 "date":     fmt_date(start_pt),
@@ -218,6 +224,9 @@ def main() -> None:
     mismatches = 0
     for fix in knockout_fixtures:
         if not fix["score"] or "TBD" in fix["home"] or "TBD" in fix["away"]:
+            continue
+        # Skip penalty games — fd.org returns combined AET+pen total which differs from our format
+        if "p" in fix["score"]:
             continue
         key = frozenset({fix["home"].lower(), fix["away"].lower()})
         fd  = fd_knockout.get(key)
