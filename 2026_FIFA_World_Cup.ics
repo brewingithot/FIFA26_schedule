@@ -1640,12 +1640,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fe0b2dc5feb2467a@fifa-world-cup-2026
-DTSTAMP:20260701T022852Z
-LAST-MODIFIED:20260701T022852Z
-SEQUENCE:14
+DTSTAMP:20260701T023053Z
+LAST-MODIFIED:20260701T023053Z
+SEQUENCE:15
 DTSTART;TZID=America/Los_Angeles:20260630T180000
 DTEND;TZID=America/Los_Angeles:20260630T181500
-SUMMARY:Mexico vs Ecuador 28' (1:0) (Round of 32)
+SUMMARY:Mexico vs Ecuador 30' (1:0) (Round of 32)
 LOCATION:Guadalajara Stadium\, Mexico
 DESCRIPTION:Stage: Round of 32\nMatch: Mexico vs Ecuador\nVenue: Guadalajar
  a Stadium\, Mexico\nKickoff: Tue Jun 30\, 2026 at 18:00 America/Los_Angeles
