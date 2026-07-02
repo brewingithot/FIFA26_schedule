@@ -29,6 +29,7 @@ from live_score_updater import (
     find_fd_match,
     extract_score_espn,
     extract_score_fd,
+    _trophy_match,
 )
 
 HERE = Path(__file__).resolve().parent
@@ -139,12 +140,14 @@ def poll() -> bool:
             log(f"  not found on any source: {m['match']}")
             continue
 
-        if score_info["minute"] == "FT":
+        if score_info["minute"] in ("FT", "FT-Pens"):
             save_final_score(m["uid"], score_info["score"])
             log(f"  FT saved: {m['match']} ({score_info['score']})")
 
+        match_display = _trophy_match(m["match"], score_info["score"]) \
+            if score_info["minute"] in ("FT", "FT-Pens") else m["match"]
         summary = (
-            f"{m['match']} {score_info['minute']} "
+            f"{match_display} {score_info['minute']} "
             f"({score_info['score']}) ({m['stage']})"
         )
         if patch_ics(m["uid"], summary, state):
