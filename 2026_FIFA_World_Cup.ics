@@ -1761,12 +1761,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:5ea06bb8b858b0ec@fifa-world-cup-2026
-DTSTAMP:20260703T044632Z
-LAST-MODIFIED:20260703T044632Z
-SEQUENCE:51
+DTSTAMP:20260703T044833Z
+LAST-MODIFIED:20260703T044833Z
+SEQUENCE:52
 DTSTART;TZID=America/Los_Angeles:20260702T200000
 DTEND;TZID=America/Los_Angeles:20260702T201500
-SUMMARY:Switzerland vs Algeria 86' (2:0) (Round of 32)
+SUMMARY:Switzerland vs Algeria 88' (2:0) (Round of 32)
 LOCATION:BC Place Vancouver\, Canada
 DESCRIPTION:Stage: Round of 32\nMatch: Switzerland vs Algeria\nVenue: BC Pl
  ace Vancouver\, Canada\nKickoff: Thu Jul 02\, 2026 at 20:00 America/Los_Ang
