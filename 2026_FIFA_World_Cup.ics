@@ -1741,12 +1741,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:e10c5372fdc44c4c@fifa-world-cup-2026
-DTSTAMP:20260703T003155Z
-LAST-MODIFIED:20260703T003155Z
-SEQUENCE:68
+DTSTAMP:20260703T003245Z
+LAST-MODIFIED:20260703T003245Z
+SEQUENCE:69
 DTSTART;TZID=America/Los_Angeles:20260702T160000
 DTEND;TZID=America/Los_Angeles:20260702T161500
-SUMMARY:Portugal vs Croatia 72' (1:1) (Round of 32)
+SUMMARY:Portugal vs Croatia 73' (1:1) (Round of 32)
 LOCATION:Toronto Stadium\, Canada
 DESCRIPTION:Stage: Round of 32\nMatch: Portugal vs Croatia\nVenue: Toronto 
  Stadium\, Canada\nKickoff: Thu Jul 02\, 2026 at 16:00 America/Los_Angeles
