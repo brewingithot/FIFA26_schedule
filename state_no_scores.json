@@ -100,9 +100,9 @@
     "stamp": "20260629T145532Z"
   },
   "3dc86d6beff0d5f7@fifa-world-cup-2026": {
-    "hash": "8e80f6d2a6e5caf3fad95e86d8cda0044b86b9de",
-    "sequence": 0,
-    "stamp": "20260628T005619Z"
+    "hash": "e0853bebb27e87f41da8c7780be6fb539d5b3492",
+    "sequence": 1,
+    "stamp": "20260706T211917Z"
   },
   "4074882b6386505f@fifa-world-cup-2026": {
     "hash": "8861c603a71237c3262008431bfec3eabd40ca10",
@@ -204,6 +204,11 @@
     "sequence": 1,
     "stamp": "20260629T145532Z"
   },
+  "5f97e556046e7541@fifa-world-cup-2026": {
+    "hash": "35a2701adf4f3e352dd4ff6bcbdd722308d2ce7b",
+    "sequence": 0,
+    "stamp": "20260706T000909Z"
+  },
   "6192487d3f6f9f38@fifa-world-cup-2026": {
     "hash": "848159ef6fcde3240c74b4a6b07c4a8b9fa16d80",
     "sequence": 0,
@@ -240,9 +245,9 @@
     "stamp": "20260705T160635Z"
   },
   "729bfcd5d9621660@fifa-world-cup-2026": {
-    "hash": "f35c1c4aacb372ad1d8eca5b67c678c7abc94588",
-    "sequence": 0,
-    "stamp": "20260628T005619Z"
+    "hash": "77acb46f08fe6c658372daf961ed4e1098386724",
+    "sequence": 2,
+    "stamp": "20260706T211917Z"
   },
   "76d8734f334179ae@fifa-world-cup-2026": {
     "hash": "a2f4efd23ba5cd7591af24f04236c13c3f9da6bc",
@@ -448,11 +453,6 @@
     "hash": "0c303e6f63db8a916fb128aee0f21a39f0f773c1",
     "sequence": 0,
     "stamp": "20260623T105008Z"
-  },
-  "ddafbbb79816b017@fifa-world-cup-2026": {
-    "hash": "fc919255cf3164b583f5a82e6cbb14c4ab1bf5bf",
-    "sequence": 1,
-    "stamp": "20260705T160635Z"
   },
   "de8e20e5fb263f60@fifa-world-cup-2026": {
     "hash": "4203502b9fca12329f57c9a619db1d8808550934",
