@@ -39,6 +39,7 @@ LOG_FILE = HERE / "daemon.log"
 POLL_INTERVAL_IDLE = 300   # 5 minutes when no match is live
 POLL_INTERVAL_LIVE = 120   # 2 minutes during a live match
 TOURNAMENT_END = date(2026, 7, 26)  # ~45 days from June 11 final
+POST_MATCH_DELAY = 900     # 15 minutes after FT before running update_xlsx
 
 
 # ── Logging ───────────────────────────────────────────────────────────────────
@@ -161,6 +162,41 @@ def poll() -> bool:
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 
+def run_post_match_update() -> None:
+    """Run update_xlsx.py + generate_ics.py to pull in final scores and bracket."""
+    log("Running post-match update_xlsx + generate_ics...")
+    try:
+        r = subprocess.run(
+            [sys.executable, str(HERE / "update_xlsx.py")],
+            capture_output=True, text=True, cwd=str(HERE),
+        )
+        if r.returncode != 0:
+            log(f"  update_xlsx failed: {r.stderr.strip()}")
+            return
+        log("  update_xlsx OK")
+        r = subprocess.run(
+            [sys.executable, str(HERE / "generate_ics.py")],
+            capture_output=True, text=True, cwd=str(HERE),
+        )
+        if r.returncode != 0:
+            log(f"  generate_ics failed: {r.stderr.strip()}")
+            return
+        log("  generate_ics OK")
+        git("add",
+            "2026_FIFA_World_Cup_Schedule.xlsx",
+            "scores.json",
+            "2026_FIFA_World_Cup.ics", "state.json",
+            "2026_FIFA_World_Cup_no_live_scores.ics", "state_no_scores.json",
+        )
+        if git("diff", "--cached", "--quiet").returncode != 0:
+            git("config", "user.name", "brewingithot")
+            git("config", "user.email", "brewingithot@users.noreply.github.com")
+            git("commit", "-m", "auto: post-match schedule update")
+            log("  committed post-match update")
+    except Exception as e:
+        log(f"  post-match update error: {e}")
+
+
 def main() -> None:
     log("=== daemon starting ===")
 
@@ -171,6 +207,9 @@ def main() -> None:
         log("stale rebase detected — aborting")
         git("rebase", "--abort")
         log("rebase aborted, continuing")
+
+    # uid -> monotonic time when FT was first seen; triggers post-match update
+    ft_seen: dict[str, float] = {}
 
     while True:
         today = datetime.now(timezone.utc).date()
@@ -183,7 +222,28 @@ def main() -> None:
             if updated:
                 pushed = commit_and_push()
                 log(f"push: {'ok' if pushed else 'FAILED — check token/upstream'}")
-            interval = POLL_INTERVAL_LIVE if find_live(read_schedule()) else POLL_INTERVAL_IDLE
+
+            # Check if any match just went FT and schedule post-match update
+            schedule = read_schedule()
+            scores = json.loads(HERE.joinpath("scores.json").read_text()) \
+                if (HERE / "scores.json").exists() else {}
+            now_mono = time.monotonic()
+            for m in schedule:
+                if m["uid"] in scores and m["uid"] not in ft_seen:
+                    ft_seen[m["uid"]] = now_mono
+                    log(f"FT detected: {m['match']} — post-match update in 15 min")
+
+            # Fire update for any match whose FT was seen 15+ minutes ago
+            for uid, seen_at in list(ft_seen.items()):
+                if now_mono - seen_at >= POST_MATCH_DELAY:
+                    run_post_match_update()
+                    pushed = commit_and_push()
+                    log(f"post-match push: {'ok' if pushed else 'FAILED'}")
+                    # Remove all pending — one update covers all finished matches
+                    ft_seen.clear()
+                    break
+
+            interval = POLL_INTERVAL_LIVE if find_live(schedule) else POLL_INTERVAL_IDLE
         except Exception as e:
             log(f"ERROR: {e}")
             interval = POLL_INTERVAL_IDLE
