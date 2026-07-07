@@ -2023,21 +2023,21 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:3dc86d6beff0d5f7@fifa-world-cup-2026
-DTSTAMP:20260707T050301Z
-LAST-MODIFIED:20260707T050301Z
-SEQUENCE:0
+DTSTAMP:20260707T202409Z
+LAST-MODIFIED:20260707T202409Z
+SEQUENCE:1
 DTSTART;TZID=America/Los_Angeles:20260710T120000
 DTEND;TZID=America/Los_Angeles:20260710T121500
-SUMMARY:Spain vs TBD (Quarter-final)
+SUMMARY:Spain vs Belgium (Quarter-final)
 LOCATION:SoFi Stadium\, USA
-DESCRIPTION:Stage: Quarter-final\nMatch: Spain vs TBD\nVenue: SoFi Stadium\
- , USA\nKickoff: Fri Jul 10\, 2026 at 12:00 America/Los_Angeles
+DESCRIPTION:Stage: Quarter-final\nMatch: Spain vs Belgium\nVenue: SoFi Stad
+ ium\, USA\nKickoff: Fri Jul 10\, 2026 at 12:00 America/Los_Angeles
 CATEGORIES:Quarter-final
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Spain vs TBD (Quarter-final)
+DESCRIPTION:Spain vs Belgium (Quarter-final)
 TRIGGER:PT0M
 END:VALARM
 END:VEVENT
@@ -2063,21 +2063,21 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:30cc664509683da9@fifa-world-cup-2026
-DTSTAMP:20260707T050301Z
-LAST-MODIFIED:20260707T050301Z
-SEQUENCE:0
+DTSTAMP:20260707T202409Z
+LAST-MODIFIED:20260707T202409Z
+SEQUENCE:1
 DTSTART;TZID=America/Los_Angeles:20260711T180000
 DTEND;TZID=America/Los_Angeles:20260711T181500
-SUMMARY:TBD vs TBD (Quarter-final)
+SUMMARY:Argentina vs TBD (Quarter-final)
 LOCATION:Kansas City Stadium\, USA
-DESCRIPTION:Stage: Quarter-final\nMatch: TBD vs TBD\nVenue: Kansas City Sta
- dium\, USA\nKickoff: Sat Jul 11\, 2026 at 18:00 America/Los_Angeles
+DESCRIPTION:Stage: Quarter-final\nMatch: Argentina vs TBD\nVenue: Kansas Ci
+ ty Stadium\, USA\nKickoff: Sat Jul 11\, 2026 at 18:00 America/Los_Angeles
 CATEGORIES:Quarter-final
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:TBD vs TBD (Quarter-final)
+DESCRIPTION:Argentina vs TBD (Quarter-final)
 TRIGGER:PT0M
 END:VALARM
 END:VEVENT
