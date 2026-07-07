@@ -1982,12 +1982,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:bbeb5a4ed2b5f20f@fifa-world-cup-2026
-DTSTAMP:20260707T200523Z
-LAST-MODIFIED:20260707T200523Z
-SEQUENCE:5
+DTSTAMP:20260707T200725Z
+LAST-MODIFIED:20260707T200725Z
+SEQUENCE:6
 DTSTART;TZID=America/Los_Angeles:20260707T130000
 DTEND;TZID=America/Los_Angeles:20260707T131500
-SUMMARY:Switzerland vs Colombia 5' (0:0) (Round of 16)
+SUMMARY:Switzerland vs Colombia 7' (0:0) (Round of 16)
 LOCATION:BC Place Vancouver\, Canada
 DESCRIPTION:Stage: Round of 16\nMatch: Switzerland vs Colombia\nVenue: BC P
  lace Vancouver\, Canada\nKickoff: Tue Jul 07\, 2026 at 13:00 America/Los_An
