@@ -1982,12 +1982,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:bbeb5a4ed2b5f20f@fifa-world-cup-2026
-DTSTAMP:20260707T202345Z
-LAST-MODIFIED:20260707T202345Z
-SEQUENCE:14
+DTSTAMP:20260707T235154Z
+LAST-MODIFIED:20260707T235154Z
+SEQUENCE:15
 DTSTART;TZID=America/Los_Angeles:20260707T130000
 DTEND;TZID=America/Los_Angeles:20260707T131500
-SUMMARY:Switzerland vs Colombia (Round of 16)
+SUMMARY:🏆 Switzerland vs Colombia FT-Pens (0:0\, 4:3p) (Round of 16)
 LOCATION:BC Place Vancouver\, Canada
 DESCRIPTION:Stage: Round of 16\nMatch: Switzerland vs Colombia\nVenue: BC P
  lace Vancouver\, Canada\nKickoff: Tue Jul 07\, 2026 at 13:00 America/Los_An
@@ -1997,7 +1997,7 @@ TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Switzerland vs Colombia (Round of 16)
+DESCRIPTION:🏆 Switzerland vs Colombia FT-Pens (0:0\, 4:3p) (Round of 16)
 TRIGGER:PT0M
 END:VALARM
 END:VEVENT
@@ -2063,21 +2063,22 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:30cc664509683da9@fifa-world-cup-2026
-DTSTAMP:20260707T202409Z
-LAST-MODIFIED:20260707T202409Z
-SEQUENCE:1
+DTSTAMP:20260707T235154Z
+LAST-MODIFIED:20260707T235154Z
+SEQUENCE:2
 DTSTART;TZID=America/Los_Angeles:20260711T180000
 DTEND;TZID=America/Los_Angeles:20260711T181500
-SUMMARY:Argentina vs TBD (Quarter-final)
+SUMMARY:Argentina vs Switzerland (Quarter-final)
 LOCATION:Kansas City Stadium\, USA
-DESCRIPTION:Stage: Quarter-final\nMatch: Argentina vs TBD\nVenue: Kansas Ci
- ty Stadium\, USA\nKickoff: Sat Jul 11\, 2026 at 18:00 America/Los_Angeles
+DESCRIPTION:Stage: Quarter-final\nMatch: Argentina vs Switzerland\nVenue: K
+ ansas City Stadium\, USA\nKickoff: Sat Jul 11\, 2026 at 18:00 America/Los_A
+ ngeles
 CATEGORIES:Quarter-final
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Argentina vs TBD (Quarter-final)
+DESCRIPTION:Argentina vs Switzerland (Quarter-final)
 TRIGGER:PT0M
 END:VALARM
 END:VEVENT
