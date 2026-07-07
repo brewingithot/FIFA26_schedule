@@ -208,8 +208,12 @@ def main() -> None:
         git("rebase", "--abort")
         log("rebase aborted, continuing")
 
-    # uid -> monotonic time when FT was first seen; triggers post-match update
-    ft_seen: dict[str, float] = {}
+    # Pre-seed with scores already known at startup — historical games never trigger
+    scores_path = HERE / "scores.json"
+    ft_known: set[str] = set(
+        json.loads(scores_path.read_text()).keys() if scores_path.exists() else []
+    )
+    ft_seen: dict[str, float] = {}  # uid -> monotonic time FT first seen (new games only)
 
     while True:
         today = datetime.now(timezone.utc).date()
@@ -223,14 +227,14 @@ def main() -> None:
                 pushed = commit_and_push()
                 log(f"push: {'ok' if pushed else 'FAILED — check token/upstream'}")
 
-            # Check if any match just went FT and schedule post-match update
+            # Detect newly finished matches not present at daemon startup
             schedule = read_schedule()
-            scores = json.loads(HERE.joinpath("scores.json").read_text()) \
-                if (HERE / "scores.json").exists() else {}
+            scores = json.loads(scores_path.read_text()) if scores_path.exists() else {}
             now_mono = time.monotonic()
             for m in schedule:
-                if m["uid"] in scores and m["uid"] not in ft_seen:
-                    ft_seen[m["uid"]] = now_mono
+                uid = m["uid"]
+                if uid in scores and uid not in ft_known and uid not in ft_seen:
+                    ft_seen[uid] = now_mono
                     log(f"FT detected: {m['match']} — post-match update in 15 min")
 
             # Fire update for any match whose FT was seen 15+ minutes ago
@@ -239,7 +243,8 @@ def main() -> None:
                     run_post_match_update()
                     pushed = commit_and_push()
                     log(f"post-match push: {'ok' if pushed else 'FAILED'}")
-                    # Remove all pending — one update covers all finished matches
+                    # Move all pending to ft_known so they never re-trigger
+                    ft_known.update(ft_seen.keys())
                     ft_seen.clear()
                     break
 
