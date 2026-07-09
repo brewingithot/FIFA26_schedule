@@ -39,7 +39,6 @@ LOG_FILE = HERE / "daemon.log"
 POLL_INTERVAL_IDLE = 300   # 5 minutes when no match is live
 POLL_INTERVAL_LIVE = 120   # 2 minutes during a live match
 TOURNAMENT_END = date(2026, 7, 26)  # ~45 days from June 11 final
-POST_MATCH_DELAY = 900     # 15 minutes after FT before running update_xlsx
 
 
 # ── Logging ───────────────────────────────────────────────────────────────────
@@ -93,13 +92,13 @@ def commit_and_push() -> bool:
 
 # ── One poll cycle ────────────────────────────────────────────────────────────
 
-def poll() -> bool:
-    """Run one check cycle. Returns True if .ics was updated."""
+def poll() -> tuple[bool, set[str]]:
+    """Run one check cycle. Returns (ics_updated, newly_ft_uids)."""
     matches = read_schedule()
     live = find_live(matches)
 
     if not live:
-        return False
+        return False, set()
 
     log(f"Live: {[m['match'] for m in live]}")
 
@@ -115,6 +114,7 @@ def poll() -> bool:
 
     state = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
     any_updated = False
+    newly_ft: set[str] = set()
 
     for m in live:
         score_info = None
@@ -144,6 +144,7 @@ def poll() -> bool:
         if score_info["minute"] in ("FT", "FT-Pens"):
             save_final_score(m["uid"], score_info["score"])
             log(f"  FT saved: {m['match']} ({score_info['score']})")
+            newly_ft.add(m["uid"])
 
         match_display = _trophy_match(m["match"], score_info["score"]) \
             if score_info["minute"] in ("FT", "FT-Pens") else m["match"]
@@ -157,7 +158,7 @@ def poll() -> bool:
         else:
             log(f"  [{source}] unchanged: {summary}")
 
-    return any_updated
+    return any_updated, newly_ft
 
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
@@ -208,12 +209,8 @@ def main() -> None:
         git("rebase", "--abort")
         log("rebase aborted, continuing")
 
-    # Pre-seed with scores already known at startup — historical games never trigger
-    scores_path = HERE / "scores.json"
-    ft_known: set[str] = set(
-        json.loads(scores_path.read_text()).keys() if scores_path.exists() else []
-    )
-    ft_seen: dict[str, float] = {}  # uid -> monotonic time FT first seen (new games only)
+    # Track UIDs whose post-match update has already been fired this session
+    post_match_done: set[str] = set()
 
     while True:
         today = datetime.now(timezone.utc).date()
@@ -222,32 +219,21 @@ def main() -> None:
             sys.exit(0)
 
         try:
-            updated = poll()
+            updated, newly_ft = poll()
             if updated:
                 pushed = commit_and_push()
                 log(f"push: {'ok' if pushed else 'FAILED — check token/upstream'}")
 
-            # Detect newly finished matches not present at daemon startup
+            # Fire update_xlsx immediately when FT is detected for new matches
+            new_ft = newly_ft - post_match_done
+            if new_ft:
+                log(f"FT detected for {len(new_ft)} match(es) — running post-match update")
+                run_post_match_update()
+                pushed = commit_and_push()
+                log(f"post-match push: {'ok' if pushed else 'FAILED'}")
+                post_match_done.update(new_ft)
+
             schedule = read_schedule()
-            scores = json.loads(scores_path.read_text()) if scores_path.exists() else {}
-            now_mono = time.monotonic()
-            for m in schedule:
-                uid = m["uid"]
-                if uid in scores and uid not in ft_known and uid not in ft_seen:
-                    ft_seen[uid] = now_mono
-                    log(f"FT detected: {m['match']} — post-match update in 15 min")
-
-            # Fire update for any match whose FT was seen 15+ minutes ago
-            for uid, seen_at in list(ft_seen.items()):
-                if now_mono - seen_at >= POST_MATCH_DELAY:
-                    run_post_match_update()
-                    pushed = commit_and_push()
-                    log(f"post-match push: {'ok' if pushed else 'FAILED'}")
-                    # Move all pending to ft_known so they never re-trigger
-                    ft_known.update(ft_seen.keys())
-                    ft_seen.clear()
-                    break
-
             interval = POLL_INTERVAL_LIVE if find_live(schedule) else POLL_INTERVAL_IDLE
         except Exception as e:
             log(f"ERROR: {e}")
