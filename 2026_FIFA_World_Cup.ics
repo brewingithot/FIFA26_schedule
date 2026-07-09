@@ -2003,12 +2003,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:8dca0817c89efec0@fifa-world-cup-2026
-DTSTAMP:20260709T201239Z
-LAST-MODIFIED:20260709T201239Z
-SEQUENCE:7
+DTSTAMP:20260709T201442Z
+LAST-MODIFIED:20260709T201442Z
+SEQUENCE:8
 DTSTART;TZID=America/Los_Angeles:20260709T130000
 DTEND;TZID=America/Los_Angeles:20260709T131500
-SUMMARY:France vs Morocco 11' (0:0) (Quarter-final)
+SUMMARY:France vs Morocco 13' (0:0) (Quarter-final)
 LOCATION:Boston Stadium\, USA
 DESCRIPTION:Stage: Quarter-final\nMatch: France vs Morocco\nVenue: Boston S
  tadium\, USA\nKickoff: Thu Jul 09\, 2026 at 13:00 America/Los_Angeles
