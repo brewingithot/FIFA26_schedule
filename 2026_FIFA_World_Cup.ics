@@ -2063,12 +2063,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:30cc664509683da9@fifa-world-cup-2026
-DTSTAMP:20260712T031803Z
-LAST-MODIFIED:20260712T031803Z
-SEQUENCE:62
+DTSTAMP:20260712T032005Z
+LAST-MODIFIED:20260712T032005Z
+SEQUENCE:63
 DTSTART;TZID=America/Los_Angeles:20260711T180000
 DTEND;TZID=America/Los_Angeles:20260711T181500
-SUMMARY:Argentina vs Switzerland 102' (1:1) (Quarter-final)
+SUMMARY:Argentina vs Switzerland 104' (1:1) (Quarter-final)
 LOCATION:Kansas City Stadium\, USA
 DESCRIPTION:Stage: Quarter-final\nMatch: Argentina vs Switzerland\nVenue: K
  ansas City Stadium\, USA\nKickoff: Sat Jul 11\, 2026 at 18:00 America/Los_A
