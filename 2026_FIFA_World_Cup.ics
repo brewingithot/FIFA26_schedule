@@ -2104,12 +2104,12 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:58d2301509f4c06c@fifa-world-cup-2026
-DTSTAMP:20260715T190209Z
-LAST-MODIFIED:20260715T190209Z
-SEQUENCE:2
+DTSTAMP:20260715T190412Z
+LAST-MODIFIED:20260715T190412Z
+SEQUENCE:3
 DTSTART;TZID=America/Los_Angeles:20260715T120000
 DTEND;TZID=America/Los_Angeles:20260715T121500
-SUMMARY:England vs Argentina 2' (0:0) (Semi-final)
+SUMMARY:England vs Argentina 4' (0:0) (Semi-final)
 LOCATION:Atlanta Stadium\, USA
 DESCRIPTION:Stage: Semi-final\nMatch: England vs Argentina\nVenue: Atlanta 
  Stadium\, USA\nKickoff: Wed Jul 15\, 2026 at 12:00 America/Los_Angeles
